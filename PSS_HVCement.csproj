@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MVVMBasic">
-      <HintPath>..\MVVMBasic\output\Debug\MVVMBasic.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -132,6 +129,10 @@
     <ProjectReference Include="..\JetPrinter.ui\JetPrinter.ui.csproj">
       <Project>{a7b47bb9-e880-46ac-9ad9-51580dac5e0a}</Project>
       <Name>JetPrinter.ui</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVVMBasic\MVVMBasic.csproj">
+      <Project>{43b11b9b-8be9-4ce0-9387-4a90f058ce4b}</Project>
+      <Name>MVVMBasic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
