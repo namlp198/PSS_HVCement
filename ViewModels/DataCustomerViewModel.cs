@@ -27,11 +27,9 @@ namespace PSS_HVCement.ViewModels
 
             List<DataCustomerModel> lst = new List<DataCustomerModel>();
             DataCustomerModel model1 = new DataCustomerModel();
-            model1.Idx = 1;
             model1.Delivery_Code = "abcxyz123";
             model1.Print_Code = "xxx";
             DataCustomerModel model2 = new DataCustomerModel();
-            model2.Idx = 2;
             model2.Delivery_Code = "abcxyz456";
             model2.Print_Code = "yyy";
             lst.Add(model1);

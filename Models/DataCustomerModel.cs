@@ -9,21 +9,21 @@ namespace PSS_HVCement.Models
 {
     public class DataCustomerModel : ModelBase
     {
-        private int m_nIdx;
+        //private int m_nIdx;
         private string m_sDelivery_Code;
         private string m_sPrint_Code;
 
-        public int Idx
-        {
-            get { return m_nIdx; }
-            set
-            {
-                if (SetProperty(ref m_nIdx, value))
-                {
+        //public int Idx
+        //{
+        //    get { return m_nIdx; }
+        //    set
+        //    {
+        //        if (SetProperty(ref m_nIdx, value))
+        //        {
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
         public string Delivery_Code
         {
             get { return m_sDelivery_Code; }
