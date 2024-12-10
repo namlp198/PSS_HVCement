@@ -56,8 +56,8 @@ namespace PSS_HVCement
                 PrintersView printersView = new PrintersView();
                 PrintersViewModel printerVM = new PrintersViewModel(printersView.Dispatcher, printersView);
                 printersView.contentPrinter1.Content = new KGKJetPrinterView("192.168.1.12");
-                printersView.contentPrinter2.Content = new KGKJetPrinterView("");
-                printersView.contentPrinter3.Content = new KGKJetPrinterView("");
+                printersView.contentPrinter2.Content = new KGKJetPrinterView("192.168.1.13");
+                printersView.contentPrinter3.Content = new KGKJetPrinterView("192.168.1.14");
                 printersView.DataContext = printerVM;
 
                 DataCustomerView dataView = new DataCustomerView();
