@@ -32,12 +32,12 @@ namespace PSS_HVCement.ViewModels
             m_mainView = mainView;
 
             PrintersVM = printersVM;
-            DataCustomerViewModel = dataCusVM;
+            DataCustomerVM = dataCusVM;
         }
 
         #region ViewModels
         public PrintersViewModel PrintersVM { get; set; }
-        public DataCustomerViewModel DataCustomerViewModel { get; set; }
+        public DataCustomerViewModel DataCustomerVM { get; set; }
         #endregion
     }
 }

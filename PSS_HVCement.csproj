@@ -55,10 +55,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\Cmd\GetDataCustomerCmd.cs" />
+    <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Models\DataCustomerModel.cs" />
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\DataTableExtension.cs" />
     <Compile Include="ViewModels\DataCustomerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PrintersViewModel.cs" />
@@ -120,7 +123,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Commands\" />
     <Folder Include="Common\" />
     <Folder Include="Resources\Images\" />
     <Folder Include="Themes\" />

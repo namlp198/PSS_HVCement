@@ -1,5 +1,6 @@
 ﻿using JetPrinter.ui;
 using MVVMBasic;
+using PSS_HVCement.Commands.Cmd;
 using PSS_HVCement.Models;
 using PSS_HVCement.Views;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace PSS_HVCement.ViewModels
@@ -24,6 +26,8 @@ namespace PSS_HVCement.ViewModels
         { 
             m_dispatcher = dispatcher;
             m_dataCusView = dataCustomerView;
+
+            this.GetDataCustomerCmd = new GetDataCustomerCmd();
 
             List<DataCustomerModel> lst = new List<DataCustomerModel>();
             DataCustomerModel model1 = new DataCustomerModel();
@@ -74,5 +78,7 @@ namespace PSS_HVCement.ViewModels
                 }
             }
         }
+
+        public ICommand GetDataCustomerCmd { get; }
     }
 }
