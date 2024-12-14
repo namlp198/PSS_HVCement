@@ -26,30 +26,54 @@ namespace PSS_HVCement.Commands.Cmd
             d2 = d2.AddDays(+1);
             string val2 = d2.ToString(strFormat);
 
-            string connectionString = "Data Source=192.168.170.4,1433;Initial Catalog=DongBo;Persist Security Info=True;User ID=sa; Password=Haivan@1234";
-            try
-            {
-                using (SqlConnection con = new SqlConnection(connectionString))
+            //string connectionString = "Data Source=192.168.170.4,1433;Initial Catalog=DongBo;Persist Security Info=True;User ID=sa; Password=Haivan@1234";
+            //try
+            //{
+            //    using (SqlConnection con = new SqlConnection(connectionString))
+            //    {
+            //        using (SqlCommand cmd = new SqlCommand("SELECT Delivery_Code,Print_Code FROM WSDBs.DeliveryCodeMap where NgayTao>@val1 and Status='RECEIVING' order by Delivery_Code asc", con))
+            //        {
+            //            cmd.CommandType = CommandType.Text;
+            //            cmd.Parameters.AddWithValue("@val1", val1);
+            //            using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+            //            {
+            //                //DataSet ds = new DataSet();
+            //                //sda.Fill(ds, "danhsachxe");
+            //                //dataGridView1.DataSource = ds;
+            //                //dataGridView1.DataMember = "danhsachxe";
+
+            //                DataTable dt = new DataTable();
+            //                sda.Fill(dt);
+
+            //                MainWindowViewModel.Instance.DataCustomerVM.DataCustomers = dt.ToList<DataCustomerModel>();
+            //            }
+            //        }
+            //    }
+
+                string connectionString = "Data Source=DESKTOP-7003IE5;Initial Catalog=DongBo;Persist Security Info=True;User ID=sa; Password=1234";
+                try
                 {
-                    using (SqlCommand cmd = new SqlCommand("SELECT Delivery_Code,Print_Code FROM WSDBs.DeliveryCodeMap where NgayTao>@val1 and Status='RECEIVING' order by Delivery_Code asc", con))
+                    using (SqlConnection con = new SqlConnection(connectionString))
                     {
-                        cmd.CommandType = CommandType.Text;
-                        cmd.Parameters.AddWithValue("@val1", val1);
-                        using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                        using (SqlCommand cmd = new SqlCommand("SELECT Delivery_Code,Print_Code FROM DeliveryCodeMap where NgayTao>@val1 and Status='RECEIVING' order by Delivery_Code asc", con))
                         {
-                            //DataSet ds = new DataSet();
-                            //sda.Fill(ds, "danhsachxe");
-                            //dataGridView1.DataSource = ds;
-                            //dataGridView1.DataMember = "danhsachxe";
+                            cmd.CommandType = CommandType.Text;
+                            cmd.Parameters.AddWithValue("@val1", val1);
+                            using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                            {
+                                //DataSet ds = new DataSet();
+                                //sda.Fill(ds, "danhsachxe");
+                                //dataGridView1.DataSource = ds;
+                                //dataGridView1.DataMember = "danhsachxe";
 
-                            DataTable dt = new DataTable();
-                            sda.Fill(dt);
+                                DataTable dt = new DataTable();
+                                sda.Fill(dt);
 
-                            MainWindowViewModel.Instance.DataCustomerVM.DataCustomers = dt.ToList<DataCustomerModel>();
+                                MainWindowViewModel.Instance.DataCustomerVM.DataCustomers = dt.ToList<DataCustomerModel>();
+                            }
                         }
                     }
                 }
-            }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
