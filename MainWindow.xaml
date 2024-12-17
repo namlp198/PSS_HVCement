@@ -4,18 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:PSS_HVCement.Views"
+        xmlns:vm="clr-namespace:PSS_HVCement.ViewModels"
         xmlns:local="clr-namespace:PSS_HVCement"
+        d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1280"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="3*" />
             <RowDefinition Height="1.2*" />
         </Grid.RowDefinitions>
-        <ContentControl x:Name="contentPrinters" />
+        <Button VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Margin="0 2 10 2"
+                Command="{Binding AboutCmd}">
+            <Button.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Image Source="/Resources/Images/AccountManagement.png"
+                               Height="30"
+                               Width="30" />
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <ContentControl Grid.Row="1" x:Name="contentPrinters" />
         <ContentControl x:Name="contentData"
-                        Grid.Row="1"/>
+                        Grid.Row="2"/>
     </Grid>
 </Window>

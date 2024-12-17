@@ -1,11 +1,15 @@
 ﻿using JetPrinter.ui;
+using PSS_HVCement.Common;
 using PSS_HVCement.Properties;
 using PSS_HVCement.ViewModels;
 using PSS_HVCement.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,39 +52,93 @@ namespace PSS_HVCement
             }
         }
 
+
         private async void BgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar.Value = e.ProgressPercentage;
             if (progressBar.Value == 100)
             {
                 PrintersView printersView = new PrintersView();
-                PrintersViewModel printerVM = new PrintersViewModel(printersView.Dispatcher, printersView);
-                printersView.contentPrinter1.Content = new KGKJetPrinterView("192.168.1.12");
-                printersView.contentPrinter2.Content = new KGKJetPrinterView("192.168.1.13");
-                printersView.contentPrinter3.Content = new KGKJetPrinterView("192.168.1.14");
-                printersView.DataContext = printerVM;
-
                 DataCustomerView dataView = new DataCustomerView();
-                DataCustomerViewModel dataVM = new DataCustomerViewModel(dataView.Dispatcher, dataView);
-                dataView.DataContext = dataVM;
 
-                MainWindow mainView = new MainWindow();
-                MainWindowViewModel mainViewModel = new MainWindowViewModel(mainView.Dispatcher, mainView, printerVM, dataVM);
-
-                mainView.contentPrinters.Content = printersView;
-                mainView.contentData.Content = dataView;
-                mainView.DataContext = mainViewModel;
-
-                for (double x = 1; x > 0; x -= 0.01d)
+                if (CheckRemainingMaintenancePeriod())
                 {
-                    await Task.Delay(2);
+                    PrintersViewModel printerVM = new PrintersViewModel(printersView.Dispatcher, printersView);
+                    printersView.contentPrinter1.Content = new KGKJetPrinterView("192.168.1.12");
+                    printersView.contentPrinter2.Content = new KGKJetPrinterView("192.168.1.13");
+                    printersView.contentPrinter3.Content = new KGKJetPrinterView("192.168.1.14");
+                    printersView.DataContext = printerVM;
 
-                    this.Opacity = x;
+                    DataCustomerViewModel dataVM = new DataCustomerViewModel(dataView.Dispatcher, dataView);
+                    dataView.DataContext = dataVM;
+
+                    MainWindow mainView = new MainWindow();
+                    MainWindowViewModel mainViewModel = new MainWindowViewModel(mainView.Dispatcher, mainView, printerVM, dataVM);
+
+                    mainView.contentPrinters.Content = printersView;
+                    mainView.contentData.Content = dataView;
+                    mainView.DataContext = mainViewModel;
+
+
+                    for (double x = 1; x > 0; x -= 0.01d)
+                    {
+                        await Task.Delay(2);
+
+                        this.Opacity = x;
+                    }
+                    this.Close();
+
+                    mainView.Show();
                 }
-                this.Close();
+                else
+                {
+                    MainWindow mainView = new MainWindow();
+                    MainWindowViewModel mainViewModel = new MainWindowViewModel(mainView.Dispatcher, mainView, null, null);
 
-                mainView.Show();
+                    mainView.contentPrinters.Content = printersView;
+                    mainView.contentData.Content = dataView;
+                    mainView.DataContext = mainViewModel;
+
+                    mainView.Show();
+
+                    MessageBox.Show("Đã hết hạn bảo trì phần mềm \r\n Vui lòng liên hệ nhà cung cấp", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Close();
+
+                }
             }
+        }
+
+        private bool CheckRemainingMaintenancePeriod()
+        {
+            string key = string.Empty;
+            try
+            {
+                string file = string.Format(@"{0}\\maintenance.lic", Environment.CurrentDirectory);
+                key = File.ReadAllText(file);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            if (string.IsNullOrEmpty(key))
+                return false;
+
+            SKGL.Validate validate = new SKGL.Validate();
+            validate.secretPhase = "ndev";
+            validate.Key = key;
+
+            int dayRemaining = (validate.ExpireDate - DateTime.Now.Date).Days;
+            if (dayRemaining <= 0)
+                return false;
+
+            if (dayRemaining <= 14)
+            {
+                string s = string.Format("{0}: {1} {2}\r\n{3}", "Thời gian bảo trì phần mềm chỉ còn lại ", dayRemaining, "ngày", "Hãy liên hệ nhà cung cấp");
+                MessageBox.Show(s, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            Defines.DaysRemaining = dayRemaining;
+            return true;
         }
     }
 }

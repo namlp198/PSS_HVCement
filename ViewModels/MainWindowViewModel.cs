@@ -1,9 +1,12 @@
 ﻿using MVVMBasic;
+using PSS_HVCement.Commands.Cmd;
+using PSS_HVCement.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace PSS_HVCement.ViewModels
@@ -33,11 +36,15 @@ namespace PSS_HVCement.ViewModels
 
             PrintersVM = printersVM;
             DataCustomerVM = dataCusVM;
+
+            this.AboutCmd = new AboutCmd();
         }
 
         #region ViewModels
         public PrintersViewModel PrintersVM { get; set; }
         public DataCustomerViewModel DataCustomerVM { get; set; }
         #endregion
+
+        public ICommand AboutCmd { get; }
     }
 }
