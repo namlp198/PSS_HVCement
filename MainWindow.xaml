@@ -8,14 +8,13 @@
         xmlns:local="clr-namespace:PSS_HVCement"
         d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1280"
-        WindowStartupLocation="CenterScreen"
-        WindowState="Maximized">
+        Title="MainWindow" Height="720" Width="1360"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="3*" />
-            <RowDefinition Height="1.2*" />
+            <RowDefinition Height="1.1*" />
         </Grid.RowDefinitions>
         <Button VerticalAlignment="Center"
                 HorizontalAlignment="Right"

@@ -53,7 +53,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="35" />
         </Grid.RowDefinitions>
         <DataGrid Grid.Row="0"
                   FontSize="18"
@@ -71,14 +71,14 @@
                                     FontSize="18"
                                     FontWeight="Bold" 
                                     Binding="{Binding Idx}"/>-->
-                <DataGridTextColumn Header="Mã giao hàng"
+                <DataGridTextColumn Header="MÃ GIAO HÀNG"
                                     Width="300"
                                     MinWidth="300"
                                     MaxWidth="600"
                                     FontSize="18"
                                     FontWeight="Bold"
                                     Binding="{Binding Delivery_Code}" />
-                <DataGridTextColumn Header="Mã in phun"
+                <DataGridTextColumn Header="MÃ IN PHUN"
                                     Width="300"
                                     MinWidth="100"
                                     MaxWidth="300"
@@ -86,13 +86,14 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button HorizontalAlignment="Right"
-                Width="150"
-                Height="45"
+                Width="130"
+                Height="30"
                 Margin="0 2 2 2"
                 Grid.Row="1"
                 x:Name="btnGetData"
                 BorderBrush="Black"
                 BorderThickness="1"
+                FontSize="14"
                 Style="{StaticResource StyleButton}"
                 Command="{Binding GetDataCustomerCmd}">
         </Button>

@@ -18,22 +18,22 @@
               Grid.Column="0"
               Margin="2">
             <ContentControl Width="auto"
-                            Height="650" 
+                            Height="auto" 
                             x:Name="contentPrinter1"/>
         </Grid>
         <Grid Grid.Row="0"
               Grid.Column="1"
               Margin="2">
             <ContentControl Width="auto"
-                            Height="650"
+                            Height="auto"
                             x:Name="contentPrinter2" />
         </Grid>
         <Grid Grid.Row="0"
               Grid.Column="2"
               Margin="2">
             <ContentControl Width="auto"
-                            Height="650"
-                            x:Name="contentPrinter3" />
+                            Height="auto"
+                            x:Name="contentPrinter3"/>
         </Grid>
     </Grid>
 </UserControl>
