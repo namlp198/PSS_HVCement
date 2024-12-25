@@ -64,9 +64,9 @@ namespace PSS_HVCement
                 if (CheckRemainingMaintenancePeriod())
                 {
                     PrintersViewModel printerVM = new PrintersViewModel(printersView.Dispatcher, printersView);
-                    printersView.contentPrinter1.Content = new KGKJetPrinterView("192.168.1.12", 1);
-                    printersView.contentPrinter2.Content = new KGKJetPrinterView("192.168.1.13", 2);
-                    printersView.contentPrinter3.Content = new KGKJetPrinterView("192.168.1.14", 3);
+                    printersView.contentPrinter1.Content = new KGKJetPrinterView("192.168.4.10", 1);
+                    printersView.contentPrinter2.Content = new KGKJetPrinterView("192.168.4.11", 2);
+                    printersView.contentPrinter3.Content = new KGKJetPrinterView("192.168.4.12", 3);
                     printersView.DataContext = printerVM;
 
                     DataCustomerViewModel dataVM = new DataCustomerViewModel(dataView.Dispatcher, dataView);
