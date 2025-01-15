@@ -1,4 +1,5 @@
 ﻿using JetPrinter.ui;
+using PSS_12Printer.ViewModels;
 using PSS_HVCement.Common;
 using PSS_HVCement.Properties;
 using PSS_HVCement.ViewModels;
@@ -58,22 +59,26 @@ namespace PSS_HVCement
             progressBar.Value = e.ProgressPercentage;
             if (progressBar.Value == 100)
             {
+                SettingView settingView = new SettingView();
+                SettingsViewModel settingsVM = new SettingsViewModel(settingView.Dispatcher, settingView);
+                settingView.DataContext = settingsVM;
+
                 PrintersView printersView = new PrintersView();
                 DataCustomerView dataView = new DataCustomerView();
 
                 if (CheckRemainingMaintenancePeriod())
                 {
                     PrintersViewModel printerVM = new PrintersViewModel(printersView.Dispatcher, printersView);
-                    printersView.contentPrinter1.Content = new KGKJetPrinterView("192.168.4.10", 1);
-                    printersView.contentPrinter2.Content = new KGKJetPrinterView("192.168.4.11", 2);
-                    printersView.contentPrinter3.Content = new KGKJetPrinterView("192.168.4.12", 3);
+                    printersView.contentPrinter1.Content = new KGKJetPrinterView(settingsVM.PrinterModels[0].IpPrinter, settingsVM.PrinterModels[0].Id);
+                    printersView.contentPrinter2.Content = new KGKJetPrinterView(settingsVM.PrinterModels[1].IpPrinter, settingsVM.PrinterModels[1].Id);
+                    printersView.contentPrinter3.Content = new KGKJetPrinterView(settingsVM.PrinterModels[2].IpPrinter, settingsVM.PrinterModels[2].Id);
                     printersView.DataContext = printerVM;
 
                     DataCustomerViewModel dataVM = new DataCustomerViewModel(dataView.Dispatcher, dataView);
                     dataView.DataContext = dataVM;
 
                     MainWindow mainView = new MainWindow();
-                    MainWindowViewModel mainViewModel = new MainWindowViewModel(mainView.Dispatcher, mainView, printerVM, dataVM);
+                    MainWindowViewModel mainViewModel = new MainWindowViewModel(mainView.Dispatcher, mainView, settingsVM, printerVM, dataVM);
 
                     mainView.contentPrinters.Content = printersView;
                     mainView.contentData.Content = dataView;
@@ -93,7 +98,7 @@ namespace PSS_HVCement
                 else
                 {
                     MainWindow mainView = new MainWindow();
-                    MainWindowViewModel mainViewModel = new MainWindowViewModel(mainView.Dispatcher, mainView, null, null);
+                    MainWindowViewModel mainViewModel = new MainWindowViewModel(mainView.Dispatcher, mainView, null, null, null);
 
                     mainView.contentPrinters.Content = printersView;
                     mainView.contentData.Content = dataView;

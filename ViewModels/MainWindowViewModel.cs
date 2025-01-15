@@ -1,4 +1,5 @@
 ﻿using MVVMBasic;
+using PSS_12Printer.ViewModels;
 using PSS_HVCement.Commands.Cmd;
 using PSS_HVCement.Common;
 using System;
@@ -25,7 +26,7 @@ namespace PSS_HVCement.ViewModels
             private set { }
         }
         #endregion
-        public MainWindowViewModel(Dispatcher dispatcher, MainWindow mainView, PrintersViewModel printersVM,
+        public MainWindowViewModel(Dispatcher dispatcher, MainWindow mainView, SettingsViewModel settingsVM, PrintersViewModel printersVM,
                                    DataCustomerViewModel dataCusVM) 
         {
             if (m_instance == null) m_instance = this;
@@ -36,15 +37,21 @@ namespace PSS_HVCement.ViewModels
 
             PrintersVM = printersVM;
             DataCustomerVM = dataCusVM;
+            SettingsVM = settingsVM;
 
             this.AboutCmd = new AboutCmd();
+            this.OpenSettingViewCmd = new OpenSettingViewCmd();
+            this.OpenReportViewCmd = new OpenReportViewCmd();
         }
 
         #region ViewModels
         public PrintersViewModel PrintersVM { get; set; }
         public DataCustomerViewModel DataCustomerVM { get; set; }
+        public SettingsViewModel SettingsVM { get; set; }
         #endregion
 
         public ICommand AboutCmd { get; }
+        public ICommand OpenSettingViewCmd { get; }
+        public ICommand OpenReportViewCmd { get; }
     }
 }

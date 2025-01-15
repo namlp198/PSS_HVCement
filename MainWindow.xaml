@@ -12,9 +12,9 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="30" />
             <RowDefinition Height="3*" />
-            <RowDefinition Height="1.1*" />
+            <RowDefinition Height="0.8*" />
         </Grid.RowDefinitions>
         <Button VerticalAlignment="Center"
                 HorizontalAlignment="Right"
@@ -23,9 +23,43 @@
             <Button.Template>
                 <ControlTemplate>
                     <Grid>
+                        <Image Source="/Resources/Images/info.png"
+                               Height="25"
+                               Width="25"
+                               Cursor="Hand" 
+                               ToolTip="Thong tin"/>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Margin="0 2 45 2"
+                Command="{Binding OpenSettingViewCmd}">
+            <Button.Template>
+                <ControlTemplate>
+                    <Grid>
                         <Image Source="/Resources/Images/AccountManagement.png"
-                               Height="30"
-                               Width="30" />
+                               Height="25"
+                               Width="25"
+                               Cursor="Hand"
+                               ToolTip="Cai dat"/>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Margin="0 2 80 2"
+                Command="{Binding OpenReportViewCmd}">
+            <Button.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Image Source="/Resources/Images/report.png"
+                               Height="25"
+                               Width="25"
+                               Cursor="Hand" 
+                               ToolTip="Bao cao"/>
                     </Grid>
                 </ControlTemplate>
             </Button.Template>
