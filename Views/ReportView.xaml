@@ -4,10 +4,151 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PSS_HVCement.Views"
+        xmlns:vm="clr-namespace:PSS_HVCement.ViewModels"
+        d:DataContext="{d:DesignInstance vm:ReportViewModel}"
         mc:Ignorable="d"
-        Title="ReportView" Height="600" Width="800"
+        Title="ReportView" Height="720" Width="1360"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="10 30 5 5"
+                           Text="Chọn máy in: "
+                           FontSize="18"
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           VerticalAlignment="Top"
+                           HorizontalAlignment="Center"/>
+                <ComboBox Margin="5 16 5 5"
+                          Width="200"
+                          Height="35"
+                          FontSize="18"
+                          FontWeight="Bold"
+                          VerticalAlignment="Top"
+                          HorizontalAlignment="Center"
+                          VerticalContentAlignment="Center"
+                          ItemsSource="{Binding Printers}"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <TabControl Margin="3">
+                <TabItem Header="BÁO CÁO SẢN XUẤT"
+                         FontSize="18"
+                         FontWeight="Bold">
+                    <DataGrid Grid.Column="0"
+                              FontSize="16"
+                              FontWeight="Bold"
+                              Name="dtgridProductionData"
+                              AutoGenerateColumns="False"
+                              Margin="2"
+                              ItemsSource="{Binding ExcelProductionDataModels}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Ngày tháng"
+                                                Width="200"
+                                                MinWidth="200"
+                                                MaxWidth="500"
+                                                FontSize="16"
+                                                FontWeight="SemiBold"
+                                                Binding="{Binding PDate}" />
+                            <DataGridTextColumn Header="Thời gian bắt đầu"
+                                                Width="200"
+                                                MinWidth="100"
+                                                MaxWidth="400"
+                                                FontWeight="SemiBold"
+                                                Binding="{Binding PStartTime}" />
+                            <DataGridTextColumn Header="Thời gian kết thúc"
+                                                Width="200"
+                                                MinWidth="100"
+                                                MaxWidth="400"
+                                                FontWeight="SemiBold"
+                                                Binding="{Binding PEndTime}" />
+                            <DataGridTextColumn Header="Ca sản xuất"
+                                                Width="150"
+                                                MinWidth="100"
+                                                MaxWidth="200"
+                                                FontWeight="SemiBold"
+                                                Binding="{Binding PShift}" />
+                            <DataGridTextColumn Header="Mã giao hàng"
+                                                Width="200"
+                                                MinWidth="100"
+                                                MaxWidth="500"
+                                                FontWeight="SemiBold"
+                                                Binding="{Binding DeliveryCode}" />
+                            <DataGridTextColumn Header="Mã in phun"
+                                                Width="200"
+                                                MinWidth="100"
+                                                MaxWidth="500"
+                                                FontWeight="SemiBold"
+                                                Binding="{Binding PrintCode}" />
+                            <DataGridTextColumn Header="Số lượng"
+                                                Width="200"
+                                                MinWidth="100"
+                                                MaxWidth="300"
+                                                FontWeight="SemiBold"
+                                                Binding="{Binding PrintCount}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="BÁO CÁO HỆ THỐNG"
+                         FontSize="18"
+                         FontWeight="Bold">
+                    <DataGrid Grid.Column="0"
+                              FontSize="16"
+                              FontWeight="Bold"
+                              Name="dtgridSystemData"
+                              AutoGenerateColumns="False"
+                              Margin="2"
+                              ItemsSource="{Binding ExcelSystemDataModels}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Ngày tháng"
+                                                Width="300"
+                                                MinWidth="200"
+                                                MaxWidth="500"
+                                                FontSize="16"
+                                                FontWeight="SemiBold"
+                                                Binding="{Binding SysDate}" />
+                            <DataGridTextColumn Header="Thời gian"
+                                                Width="300"
+                                                MinWidth="200"
+                                                MaxWidth="500"
+                                                FontWeight="SemiBold"
+                                                Binding="{Binding SysTime}" />
+                            <DataGridTextColumn Header="Cảnh báo máy in"
+                                                Width="500"
+                                                MinWidth="300"
+                                                MaxWidth="800"
+                                                FontWeight="SemiBold"
+                                                Binding="{Binding PrintReport}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Button VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Margin="0 5 10 5"
+                    Width="180"
+                    Height="50"
+                    Cursor="Hand">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Resources/Images/excel_1.png" 
+                               Margin="5"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"/>
+                        <TextBlock Text="XUẤT BÁO CÁO"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </Grid>
     </Grid>
 </Window>

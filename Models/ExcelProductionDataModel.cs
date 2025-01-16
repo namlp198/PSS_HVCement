@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PSS_HVCement.Models
 {
-    public class ExcelDataProductionModel
+    public class ExcelProductionDataModel
     {
         public string PDate { get; set; }
         public string PStartTime { get; set; }

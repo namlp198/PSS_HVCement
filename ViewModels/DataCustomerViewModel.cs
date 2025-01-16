@@ -65,14 +65,17 @@ namespace PSS_HVCement.ViewModels
                     if (KGKPrinter1 != null)
                     {
                         KGKPrinter1.MessageContent = m_dataCusModelSelected.Print_Code.Trim() + KGKPrinter1.DateTimeSelected;
+                        KGKPrinter1.DeliveryCode = m_dataCusModelSelected.Delivery_Code;
                     }
                     if (KGKPrinter2 != null)
                     {
                         KGKPrinter2.MessageContent = m_dataCusModelSelected.Print_Code.Trim() + KGKPrinter2.DateTimeSelected;
+                        KGKPrinter2.DeliveryCode = m_dataCusModelSelected.Delivery_Code;
                     }
                     if (KGKPrinter3 != null)
                     {
                         KGKPrinter3.MessageContent = m_dataCusModelSelected.Print_Code.Trim() + KGKPrinter3.DateTimeSelected;
+                        KGKPrinter3.DeliveryCode = m_dataCusModelSelected.Delivery_Code;
                     }
                 }
             }

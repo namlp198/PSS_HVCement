@@ -2,6 +2,7 @@
 using PSS_12Printer.ViewModels;
 using PSS_HVCement.Commands.Cmd;
 using PSS_HVCement.Common;
+using PSS_HVCement.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,9 @@ namespace PSS_HVCement.ViewModels
             this.AboutCmd = new AboutCmd();
             this.OpenSettingViewCmd = new OpenSettingViewCmd();
             this.OpenReportViewCmd = new OpenReportViewCmd();
+
+            // Create report
+            Csv_Manager.Instance.Initialize(SettingsVM.NumberOfPrinter);
         }
 
         #region ViewModels

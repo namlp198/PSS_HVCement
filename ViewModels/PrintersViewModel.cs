@@ -1,4 +1,7 @@
-﻿using MVVMBasic;
+﻿using JetPrinter.ui;
+using MVVMBasic;
+using PSS_HVCement.Manager;
+using PSS_HVCement.Models;
 using PSS_HVCement.Views;
 using System;
 using System.Collections.Generic;
@@ -15,10 +18,49 @@ namespace PSS_HVCement.ViewModels
         private PrintersView m_printerView;
         public PrintersView PrinterView { get { return m_printerView; } set { m_printerView = value; } }
 
+        private KGKJetPrinterView m_kgkPrinter1 = new KGKJetPrinterView();
+        private KGKJetPrinterView m_kgkPrinter2 = new KGKJetPrinterView();
+        private KGKJetPrinterView m_kgkPrinter3 = new KGKJetPrinterView();
+        public KGKJetPrinterView KGKJetPrinter1 { get => m_kgkPrinter1; set => m_kgkPrinter1 = value; }
+        public KGKJetPrinterView KGKJetPrinter2 { get => m_kgkPrinter2; set => m_kgkPrinter2 = value; }
+        public KGKJetPrinterView KGKJetPrinter3 { get => m_kgkPrinter3; set => m_kgkPrinter3 = value; }
+
         public PrintersViewModel(Dispatcher dispatcher, PrintersView printerView)
         {
             m_dispatcher = dispatcher;
             m_printerView = printerView;
+        }
+        public void Initialize()
+        {
+            m_kgkPrinter1.PrintCompletedEvent += m_kgkPrinter1_PrintCompletedEvent;
+            m_kgkPrinter2.PrintCompletedEvent += m_kgkPrinter2_PrintCompletedEvent;
+            m_kgkPrinter3.PrintCompletedEvent += m_kgkPrinter3_PrintCompletedEvent;
+        }
+        private void m_kgkPrinter3_PrintCompletedEvent(List<string> data)
+        {
+            
+        }
+
+        private void m_kgkPrinter2_PrintCompletedEvent(List<string> data)
+        {
+            // record to database
+            List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
+            ExcelProductionDataModel excelModel = new ExcelProductionDataModel();
+            excelModel.PDate = data[0];
+            excelModel.PStartTime = data[1];
+            excelModel.PEndTime = data[2];
+            excelModel.PShift = data[3];
+            excelModel.DeliveryCode = data[4];
+            excelModel.PrintCode = data[5];
+            excelModel.PrintCount = int.Parse(data[6]);
+
+            excelProductionDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 2);
+        }
+
+        private void m_kgkPrinter1_PrintCompletedEvent(List<string> data)
+        {
+            
         }
     }
 }

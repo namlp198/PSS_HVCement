@@ -18,6 +18,7 @@ namespace PSS_12Printer.ViewModels
         private SettingView m_settingView;
         private List<PrinterModel> m_printerModels = new List<PrinterModel>();
         private XmlManagement m_xmlManagement = new XmlManagement();
+
         public SettingView PrinterView { get { return m_settingView; } set { m_settingView = value; } }
         public List<PrinterModel> PrinterModels { get => m_printerModels; set { m_printerModels = value; } }
         public SettingsViewModel(Dispatcher dispatcher, SettingView settingView)
@@ -28,6 +29,18 @@ namespace PSS_12Printer.ViewModels
             LoadSettings();
         }
 
+        private int m_nNumberOfPrinter = 0;
+        public int NumberOfPrinter
+        {
+            get => m_nNumberOfPrinter;
+            set
+            {
+                if(SetProperty(ref m_nNumberOfPrinter, value))
+                {
+
+                }    
+            }
+        }
         private void LoadSettings()
         {
             string settingsPath = Defines.STARTUP_PROG_PATH + "\\Settings.config";
@@ -72,6 +85,8 @@ namespace PSS_12Printer.ViewModels
 
                 m_printerModels.Add(model3);
             }
+
+            NumberOfPrinter = m_printerModels.Count;
 
             m_xmlManagement.Close();
         }
