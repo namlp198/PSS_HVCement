@@ -107,6 +107,7 @@
     <Compile Include="Common\XmlManagement.cs" />
     <Compile Include="Manager\Csv_Manager.cs" />
     <Compile Include="Manager\ExcelParser.cs" />
+    <Compile Include="Manager\Excel_Manager.cs" />
     <Compile Include="Models\DataCustomerModel.cs" />
     <Compile Include="Models\ExcelProductionDataModel.cs" />
     <Compile Include="Models\ExcelSystemDataModel.cs" />

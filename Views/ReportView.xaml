@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PSS_HVCement.Views"
         xmlns:vm="clr-namespace:PSS_HVCement.ViewModels"
@@ -25,6 +26,7 @@
                            VerticalAlignment="Top"
                            HorizontalAlignment="Center"/>
                 <ComboBox Margin="5 16 5 5"
+                          Name="cbbPrinters"
                           Width="200"
                           Height="35"
                           FontSize="18"
@@ -32,21 +34,40 @@
                           VerticalAlignment="Top"
                           HorizontalAlignment="Center"
                           VerticalContentAlignment="Center"
-                          ItemsSource="{Binding Printers}"/>
+                          ItemsSource="{Binding Printers}"
+                          SelectedItem="{Binding PrinterSelected, Mode=TwoWay}"/>
+                <TextBlock Text="Chọn ngày:"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           VerticalAlignment="Top"
+                           HorizontalAlignment="Center"
+                           Margin="20 30 2 2" />
+                <DatePicker FontSize="18"
+                            FontWeight="Bold"
+                            Margin="10 20 5 5"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            SelectedDate="{x:Static sys:DateTime.Now}"
+                            x:Name="datePickerReport"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <TabControl Margin="3">
+            <TabControl Margin="3"
+                        Name="tabReport">
                 <TabItem Header="BÁO CÁO SẢN XUẤT"
                          FontSize="18"
-                         FontWeight="Bold">
+                         FontWeight="Bold"
+                         Name="tabItemProductionData">
                     <DataGrid Grid.Column="0"
                               FontSize="16"
                               FontWeight="Bold"
                               Name="dtgridProductionData"
                               AutoGenerateColumns="False"
                               Margin="2"
-                              ItemsSource="{Binding ExcelProductionDataModels}">
+                              ItemsSource="{Binding ExcelProductionDataModels}"
+                              SelectedItem="{Binding ExcelProductDataSelected, Mode=TwoWay}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Ngày tháng"
                                                 Width="200"
@@ -96,14 +117,16 @@
                 </TabItem>
                 <TabItem Header="BÁO CÁO HỆ THỐNG"
                          FontSize="18"
-                         FontWeight="Bold">
+                         FontWeight="Bold"
+                         Name="tabItemSystemData">
                     <DataGrid Grid.Column="0"
                               FontSize="16"
                               FontWeight="Bold"
                               Name="dtgridSystemData"
                               AutoGenerateColumns="False"
                               Margin="2"
-                              ItemsSource="{Binding ExcelSystemDataModels}">
+                              ItemsSource="{Binding ExcelSystemDataModels}"
+                              SelectedItem="{Binding ExcelSystemDataSelected, Mode=TwoWay}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Ngày tháng"
                                                 Width="300"
@@ -133,19 +156,40 @@
             <Button VerticalAlignment="Center"
                     HorizontalAlignment="Right"
                     Margin="0 5 10 5"
-                    Width="180"
+                    Width="280"
                     Height="50"
-                    Cursor="Hand">
+                    Cursor="Hand"
+                    Name="btnExcelExport">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Resources/Images/excel_1.png" 
                                Margin="5"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Left"/>
-                        <TextBlock Text="XUẤT BÁO CÁO"
-                                   FontSize="16"
+                        <TextBlock Text="XUẤT BÁO CÁO THEO MÁY IN"
+                                   FontSize="14"
                                    FontWeight="Bold"
                                    VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Margin="0 5 300 5"
+                    Width="280"
+                    Height="50"
+                    Cursor="Hand"
+                    Name="btnExcelExportAll">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Resources/Images/excel_1.png"
+                               Margin="5"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left" />
+                        <TextBlock Text="XUẤT BÁO CÁO TẤT CẢ MÁY IN"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center" />
                     </StackPanel>
                 </Button.Content>
             </Button>

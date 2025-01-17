@@ -18,7 +18,6 @@ namespace PSS_HVCement.Manager
     {
         private string m_strProductionDataFolderPath = "D:\\DuLieuSanXuat";
         private string m_strDailyProductionDataFolderPath = "";
-        private string m_strReportFolderPath = "D:\\DuLieuSanXuat\\BaoCao";
 
         private List<string> m_listProductionData = new List<string>();
         private List<string> m_listSysData = new List<string>();
@@ -42,7 +41,7 @@ namespace PSS_HVCement.Manager
         public void Initialize(int nNumberOfPrinter)
         {
             CreateFolder(m_strProductionDataFolderPath);
-            CreateFolder(m_strReportFolderPath);
+            //CreateFolder(m_strReportFolderPath);
 
             m_strDailyProductionDataFolderPath = m_strProductionDataFolderPath + "\\DuLieu_" + DateTime.Now.ToString("dd-MM-yyyy");
             CreateFolder(m_strDailyProductionDataFolderPath);
