@@ -159,17 +159,17 @@
                     Width="280"
                     Height="50"
                     Cursor="Hand"
-                    Name="btnExcelExport">
+                    Name="btnExcelExportAll">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="/Resources/Images/excel_1.png" 
+                        <Image Source="/Resources/Images/excel_1.png"
                                Margin="5"
                                VerticalAlignment="Center"
-                               HorizontalAlignment="Left"/>
-                        <TextBlock Text="XUẤT BÁO CÁO THEO MÁY IN"
+                               HorizontalAlignment="Left" />
+                        <TextBlock Text="XUẤT BÁO CÁO"
                                    FontSize="14"
                                    FontWeight="Bold"
-                                   VerticalAlignment="Center"/>
+                                   VerticalAlignment="Center" />
                     </StackPanel>
                 </Button.Content>
             </Button>
@@ -179,14 +179,15 @@
                     Width="280"
                     Height="50"
                     Cursor="Hand"
-                    Name="btnExcelExportAll">
+                    Name="btnExcelExport"
+                    Visibility="Collapsed">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Resources/Images/excel_1.png"
                                Margin="5"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Left" />
-                        <TextBlock Text="XUẤT BÁO CÁO TẤT CẢ MÁY IN"
+                        <TextBlock Text="XUẤT BÁO CÁO THEO MÁY IN"
                                    FontSize="14"
                                    FontWeight="Bold"
                                    VerticalAlignment="Center" />

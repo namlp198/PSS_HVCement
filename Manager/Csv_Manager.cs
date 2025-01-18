@@ -18,6 +18,7 @@ namespace PSS_HVCement.Manager
     {
         private string m_strProductionDataFolderPath = "D:\\DuLieuSanXuat";
         private string m_strDailyProductionDataFolderPath = "";
+        private string m_strCsvFileCurrent = "";
 
         private List<string> m_listProductionData = new List<string>();
         private List<string> m_listSysData = new List<string>();
@@ -38,6 +39,12 @@ namespace PSS_HVCement.Manager
         {
            
         }
+
+        #region Properties
+        public string ProductionDataFolderPath { get => m_strProductionDataFolderPath; }
+        #endregion
+
+        #region Func
         public void Initialize(int nNumberOfPrinter)
         {
             CreateFolder(m_strProductionDataFolderPath);
@@ -46,7 +53,7 @@ namespace PSS_HVCement.Manager
             m_strDailyProductionDataFolderPath = m_strProductionDataFolderPath + "\\DuLieu_" + DateTime.Now.ToString("dd-MM-yyyy");
             CreateFolder(m_strDailyProductionDataFolderPath);
 
-            CreateReportFile(nNumberOfPrinter);
+            CreateDataFile(nNumberOfPrinter);
         }
         private void CreateFolder(string folderPath)
         {
@@ -62,8 +69,7 @@ namespace PSS_HVCement.Manager
                 MessageBox.Show(ex.Message);
             }
         }
-
-        private void CreateReportFile(int nNumberOfPrinter)
+        private void CreateDataFile(int nNumberOfPrinter)
         {
             if (nNumberOfPrinter == 0)
                 return;
@@ -170,6 +176,46 @@ namespace PSS_HVCement.Manager
                 return null;
             }
         }
+        public List<ExcelProductionDataModel> ReadExcelProductionDataModelFromCsv(string filePath)
+        {
+            if(string.IsNullOrEmpty(filePath))
+                return null;
+
+            m_strCsvFileCurrent = filePath;
+
+            return ReadExcelProductionDataModelFromCsv();
+        }
+        private List<ExcelProductionDataModel> ReadExcelProductionDataModelFromCsv()
+        {
+            if (string.IsNullOrEmpty(m_strCsvFileCurrent))
+                return null;
+
+            try
+            {
+                if (File.Exists(m_strCsvFileCurrent))
+                {
+                    List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
+                    var config = new CsvConfiguration(CultureInfo.InvariantCulture);
+                    {
+                        config.HasHeaderRecord = false;
+                    }
+                    using (StreamReader streamReader = new StreamReader(m_strCsvFileCurrent))
+                    using (CsvReader csvReader = new CsvReader(streamReader, config))
+                    {
+                        // Read records from CSV file
+                        IEnumerable<ExcelProductionDataModel> records = csvReader.GetRecords<ExcelProductionDataModel>();
+                        excelProductionDataModels = records.ToList();
+                    }
+                    return excelProductionDataModels;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
         #endregion
 
         #region Read/Write Sys Data
@@ -221,6 +267,46 @@ namespace PSS_HVCement.Manager
                         config.HasHeaderRecord = false;
                     }
                     using (StreamReader streamReader = new StreamReader(m_listSysData[nPrinterIdx]))
+                    using (CsvReader csvReader = new CsvReader(streamReader, config))
+                    {
+                        // Read records from CSV file
+                        IEnumerable<ExcelSystemDataModel> records = csvReader.GetRecords<ExcelSystemDataModel>();
+                        excelSysDataModels = records.ToList();
+                    }
+                    return excelSysDataModels;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+        public List<ExcelSystemDataModel> ReadExcelSysDataModelFromCsv(string filePath)
+        {
+            if(string.IsNullOrEmpty(filePath))
+                return null;
+            
+            m_strCsvFileCurrent = filePath;
+
+            return ReadExcelSysDataModelFromCsv();
+        }
+        private List<ExcelSystemDataModel> ReadExcelSysDataModelFromCsv()
+        {
+            if (string.IsNullOrEmpty(m_strCsvFileCurrent))
+                return null;
+
+            try
+            {
+                if (File.Exists(m_strCsvFileCurrent))
+                {
+                    List<ExcelSystemDataModel> excelSysDataModels = new List<ExcelSystemDataModel>();
+                    var config = new CsvConfiguration(CultureInfo.InvariantCulture);
+                    {
+                        config.HasHeaderRecord = false;
+                    }
+                    using (StreamReader streamReader = new StreamReader(m_strCsvFileCurrent))
                     using (CsvReader csvReader = new CsvReader(streamReader, config))
                     {
                         // Read records from CSV file
@@ -293,6 +379,8 @@ namespace PSS_HVCement.Manager
                 return null;
             }
         }
+        #endregion
+
         #endregion
     }
 }

@@ -35,10 +35,69 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter1.PrintCompletedEvent += m_kgkPrinter1_PrintCompletedEvent;
             m_kgkPrinter2.PrintCompletedEvent += m_kgkPrinter2_PrintCompletedEvent;
             m_kgkPrinter3.PrintCompletedEvent += m_kgkPrinter3_PrintCompletedEvent;
+
+            m_kgkPrinter1.ReportFromPrinterEvent += M_kgkPrinter1_ReportFromPrinterEvent;
+            m_kgkPrinter2.ReportFromPrinterEvent += M_kgkPrinter2_ReportFromPrinterEvent;
+            m_kgkPrinter3.ReportFromPrinterEvent += M_kgkPrinter3_ReportFromPrinterEvent;
         }
+
+        private void M_kgkPrinter3_ReportFromPrinterEvent(string data)
+        {
+            // record to database
+            List<ExcelSystemDataModel> excelSystemDataModels = new List<ExcelSystemDataModel>();
+            ExcelSystemDataModel excelModel = new ExcelSystemDataModel();
+
+            excelModel.SysDate = DateTime.Now.ToString("dd-MM-yyyy");
+            excelModel.SysTime = DateTime.Now.ToString("HH:mm:ss");
+            excelModel.PrintReport = data;
+
+            excelSystemDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewSysDataModelToCsv(excelSystemDataModels, 3);
+        }
+
+        private void M_kgkPrinter2_ReportFromPrinterEvent(string data)
+        {
+            // record to database
+            List<ExcelSystemDataModel> excelSystemDataModels = new List<ExcelSystemDataModel>();
+            ExcelSystemDataModel excelModel = new ExcelSystemDataModel();
+
+            excelModel.SysDate = DateTime.Now.ToString("dd-MM-yyyy");
+            excelModel.SysTime = DateTime.Now.ToString("HH:mm:ss");
+            excelModel.PrintReport = data;
+
+            excelSystemDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewSysDataModelToCsv(excelSystemDataModels, 2);
+        }
+
+        private void M_kgkPrinter1_ReportFromPrinterEvent(string data)
+        {
+            // record to database
+            List<ExcelSystemDataModel> excelSystemDataModels = new List<ExcelSystemDataModel>();
+            ExcelSystemDataModel excelModel = new ExcelSystemDataModel();
+
+            excelModel.SysDate = DateTime.Now.ToString("dd-MM-yyyy");
+            excelModel.SysTime = DateTime.Now.ToString("HH:mm:ss");
+            excelModel.PrintReport = data;
+
+            excelSystemDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewSysDataModelToCsv(excelSystemDataModels, 1);
+        }
+
         private void m_kgkPrinter3_PrintCompletedEvent(List<string> data)
         {
-            
+            // record to database
+            List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
+            ExcelProductionDataModel excelModel = new ExcelProductionDataModel();
+            excelModel.PDate = data[0];
+            excelModel.PStartTime = data[1];
+            excelModel.PEndTime = data[2];
+            excelModel.PShift = data[3];
+            excelModel.DeliveryCode = data[4];
+            excelModel.PrintCode = data[5];
+            excelModel.PrintCount = int.Parse(data[6]);
+
+            excelProductionDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 3);
         }
 
         private void m_kgkPrinter2_PrintCompletedEvent(List<string> data)
@@ -60,7 +119,19 @@ namespace PSS_HVCement.ViewModels
 
         private void m_kgkPrinter1_PrintCompletedEvent(List<string> data)
         {
-            
+            // record to database
+            List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
+            ExcelProductionDataModel excelModel = new ExcelProductionDataModel();
+            excelModel.PDate = data[0];
+            excelModel.PStartTime = data[1];
+            excelModel.PEndTime = data[2];
+            excelModel.PShift = data[3];
+            excelModel.DeliveryCode = data[4];
+            excelModel.PrintCode = data[5];
+            excelModel.PrintCount = int.Parse(data[6]);
+
+            excelProductionDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 1);
         }
     }
 }

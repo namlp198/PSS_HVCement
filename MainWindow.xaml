@@ -27,15 +27,46 @@
                                Height="25"
                                Width="25"
                                Cursor="Hand" 
-                               ToolTip="Thong tin"/>
+                               ToolTip="Thông tin"/>
                     </Grid>
                 </ControlTemplate>
             </Button.Template>
         </Button>
         <Button VerticalAlignment="Center"
                 HorizontalAlignment="Right"
-                Margin="0 2 45 2"
-                Command="{Binding OpenSettingViewCmd}">
+                Margin="0 2 45 5"
+                Name="btnLogin"
+                Width="25"
+                Height="25"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Cursor="Hand"
+                Opacity="1.0"
+                Command="{Binding OpenLoginViewCmd}"
+                CommandParameter="{Binding ElementName=tbLogin, Path=Text}">
+            <Button.Content>
+                <Grid>
+                    <Image Source="{Binding DisplayImage_LoginStatusPath}"
+                           Width="25"
+                           Height="25" />
+                    <TextBlock Text="LOGIN"
+                               Name="tbLogin"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center"
+                               FontSize="18"
+                               Foreground="White"
+                               FontWeight="SemiBold"
+                               Visibility="Collapsed"/>
+                </Grid>
+            </Button.Content>
+        </Button>
+        <Button VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Margin="0 2 80 2"
+                Command="{Binding OpenSettingViewCmd}"
+                IsEnabled="{Binding IsAllowOperation}"
+                Opacity="{Binding DOpacity}">
             <Button.Template>
                 <ControlTemplate>
                     <Grid>
@@ -43,15 +74,17 @@
                                Height="25"
                                Width="25"
                                Cursor="Hand"
-                               ToolTip="Cai dat"/>
+                               ToolTip="Cài đặt"/>
                     </Grid>
                 </ControlTemplate>
             </Button.Template>
         </Button>
         <Button VerticalAlignment="Center"
                 HorizontalAlignment="Right"
-                Margin="0 2 80 2"
-                Command="{Binding OpenReportViewCmd}">
+                Margin="0 2 115 2"
+                Command="{Binding OpenReportViewCmd}"
+                IsEnabled="{Binding IsAllowOperation}"
+                Opacity="{Binding DOpacity}">
             <Button.Template>
                 <ControlTemplate>
                     <Grid>
@@ -59,7 +92,7 @@
                                Height="25"
                                Width="25"
                                Cursor="Hand" 
-                               ToolTip="Bao cao"/>
+                               ToolTip="Báo cáo"/>
                     </Grid>
                 </ControlTemplate>
             </Button.Template>

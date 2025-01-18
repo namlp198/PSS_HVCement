@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -54,22 +55,46 @@ namespace PSS_HVCement.ViewModels
                 var datetime = datePicker.SelectedDate.Value;
                 if (datetime != null)
                 {
+                    int nPrinterOrder = m_reportView.cbbPrinters.SelectedIndex + 1;
 
+                    string productionDataFileName = string.Format("DuLieuSanXuat_MAYIN{0}.csv", nPrinterOrder);
+                    string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
+
+                    string productionDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + productionDataFileName;
+                    string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
+
+                    List<ExcelProductionDataModel> productionDataModels = Csv_Manager.Instance.ReadExcelProductionDataModelFromCsv(productionDataFilePath);
+                    List<ExcelSystemDataModel> sysDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(sysDataFilePath);
+
+                    ExcelProductionDataModels = productionDataModels;
+                    ExcelSystemDataModels = sysDataModels;
                 }
             }
         }
 
         private async void BtnExcelExportAll_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            Excel_Manager.Instance.StartAppExcel();
+            if (m_reportView.datePickerReport.SelectedDate.Value == null)
+                return;
+
+            // Open report file according datetimepicker
+            var datetime = m_reportView.datePickerReport.SelectedDate.Value;
+            string reportFileName = "BaoCao_" + datetime.ToString("dd-MM-yyyy"); 
+            Excel_Manager.Instance.StartAppExcel(reportFileName);
 
             for (int i = 0; i < Printers.Count; i++)
             {
                 int nPrinterOrder = i + 1;
-                List<ExcelProductionDataModel> excelProductionDataModels = Csv_Manager.Instance.ReadExcelProductionDataModelFromCsv(nPrinterOrder);
-                List<ExcelSystemDataModel> excelSystemDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(nPrinterOrder);
+                string productionDataFileName = string.Format("DuLieuSanXuat_MAYIN{0}.csv", nPrinterOrder);
+                string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
 
-                switch(nPrinterOrder)
+                string productionDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + productionDataFileName;
+                string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
+
+                List<ExcelProductionDataModel> excelProductionDataModels = Csv_Manager.Instance.ReadExcelProductionDataModelFromCsv(productionDataFilePath);
+                List<ExcelSystemDataModel> excelSystemDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(sysDataFilePath);
+
+                switch (nPrinterOrder)
                 {
                     case 1:
                         await Excel_Manager.Instance.ExportProductionData(excelProductionDataModels, "BaoCaoSanXuat_MAYIN1", 3);
@@ -86,6 +111,8 @@ namespace PSS_HVCement.ViewModels
                 }
             }
             Excel_Manager.Instance.CancelExcelParser();
+
+            MessageBox.Show("Đã xuất báo cáo thành công!", "THÔNG BÁO", MessageBoxButton.OK, MessageBoxImage.Information);
             Excel_Manager.Instance.OpenReportFolder();
         }
 
@@ -96,9 +123,20 @@ namespace PSS_HVCement.ViewModels
 
             int nPrinterOrder = m_reportView.cbbPrinters.SelectedIndex + 1;
 
-            Excel_Manager.Instance.StartAppExcel();
+            if (m_reportView.datePickerReport.SelectedDate.Value == null)
+                return;
 
-            switch(nPrinterOrder)
+            var datetime = m_reportView.datePickerReport.SelectedDate.Value;
+            string reportFileName = "BaoCao_" + datetime.ToString("dd-MM-yyyy");
+            Excel_Manager.Instance.StartAppExcel(reportFileName);
+
+            string productionDataFileName = string.Format("DuLieuSanXuat_MAYIN{0}.csv", nPrinterOrder);
+            string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
+
+            string productionDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + productionDataFileName;
+            string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
+
+            switch (nPrinterOrder)
             {
                 // MAY IN 1
                 case 1:
@@ -184,27 +222,25 @@ namespace PSS_HVCement.ViewModels
             {
                 if (SetProperty(ref m_printerSelected, value))
                 {
-                    if (m_printerSelected.CompareTo("MÁY IN 1") == 0)
-                    {
-                        List<ExcelProductionDataModel> excelProductionDataModels = Csv_Manager.Instance.ReadExcelProductionDataModelFromCsv(1);
-                        List<ExcelSystemDataModel> excelSystemDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(1);
-                        ExcelProductionDataModels = excelProductionDataModels;
-                        ExcelSystemDataModels = excelSystemDataModels;
-                    }
-                    else if (m_printerSelected.CompareTo("MÁY IN 2") == 0)
-                    {
-                        List<ExcelProductionDataModel> excelProductionDataModels = Csv_Manager.Instance.ReadExcelProductionDataModelFromCsv(2);
-                        List<ExcelSystemDataModel> excelSystemDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(2);
-                        ExcelProductionDataModels = excelProductionDataModels;
-                        ExcelSystemDataModels = excelSystemDataModels;
-                    }
-                    else if (m_printerSelected.CompareTo("MÁY IN 3") == 0)
-                    {
-                        List<ExcelProductionDataModel> excelProductionDataModels = Csv_Manager.Instance.ReadExcelProductionDataModelFromCsv(3);
-                        List<ExcelSystemDataModel> excelSystemDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(3);
-                        ExcelProductionDataModels = excelProductionDataModels;
-                        ExcelSystemDataModels = excelSystemDataModels;
-                    }
+
+                    if (m_reportView.datePickerReport.SelectedDate.Value == null)
+                        return;
+
+                    var datetime = m_reportView.datePickerReport.SelectedDate.Value;
+                    int nPrinterOrder = m_reportView.cbbPrinters.SelectedIndex + 1;
+
+                    string productionDataFileName = string.Format("DuLieuSanXuat_MAYIN{0}.csv", nPrinterOrder);
+                    string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
+
+                    string productionDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + productionDataFileName;
+                    string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
+
+                    List<ExcelProductionDataModel> excelProductionDataModels = Csv_Manager.Instance.ReadExcelProductionDataModelFromCsv(productionDataFilePath);
+                    List<ExcelSystemDataModel> excelSystemDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(sysDataFilePath);
+
+                    ExcelProductionDataModels = excelProductionDataModels;
+                    ExcelSystemDataModels = excelSystemDataModels;
+
                 }
             }
         }

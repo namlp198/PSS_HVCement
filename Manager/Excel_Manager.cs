@@ -57,10 +57,10 @@ namespace PSS_HVCement.Manager
             if (m_listColumnNameSystemData == null)
                 m_listColumnNameSystemData = new List<string>() { "A", "B", "C", "D" };
         }
-        public void StartAppExcel()
+        public void StartAppExcel(string filePath)
         {
             KillAppExcel();
-            OpenExcelResultFile();
+            OpenExcelResultFile(filePath);
         }
         public void CancelExcelParser()
         {
@@ -74,7 +74,7 @@ namespace PSS_HVCement.Manager
                 process.Kill();
             }
         }
-        void OpenExcelResultFile()
+        void OpenExcelResultFile(string filePath)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace PSS_HVCement.Manager
                     m_excelParser = new ExcelParser();
 
                 string currentDir = m_strReportFolderPath + "\\Template\\" + "Report_Template.xlsx";
-                string currentDailyData = m_strReportFolderPath + "\\BaoCao_" + DateTime.Now.ToString("dd-MM-yyyy") + ".xlsx";
+                string currentDailyData = m_strReportFolderPath + "\\" + filePath + ".xlsx";
                 if (!File.Exists(currentDailyData))
                 {
                     File.Copy(@currentDir, @currentDailyData);

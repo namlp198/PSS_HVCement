@@ -99,7 +99,9 @@
     </ApplicationDefinition>
     <Compile Include="Commands\Cmd\AboutCmd.cs" />
     <Compile Include="Commands\Cmd\GetDataCustomerCmd.cs" />
+    <Compile Include="Commands\Cmd\LoginCmd.cs" />
     <Compile Include="Commands\Cmd\OpenReportViewCmd.cs" />
+    <Compile Include="Commands\Cmd\OpenLoginViewCmd.cs" />
     <Compile Include="Commands\Cmd\OpenSettingViewCmd.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Common\Defines.cs" />
@@ -118,6 +120,7 @@
     </Compile>
     <Compile Include="Utils\DataTableExtension.cs" />
     <Compile Include="ViewModels\DataCustomerViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PrintersViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModel.cs" />
@@ -127,6 +130,9 @@
     </Compile>
     <Compile Include="Views\DataCustomerView.xaml.cs">
       <DependentUpon>DataCustomerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PrintersView.xaml.cs">
       <DependentUpon>PrintersView.xaml</DependentUpon>
@@ -161,6 +167,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DataCustomerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -229,6 +239,9 @@
     <Resource Include="Resources\Images\info.png" />
     <Resource Include="Resources\Images\excel_1.png" />
     <Resource Include="Resources\Images\report.png" />
+    <Resource Include="Resources\Images\account.png" />
+    <Resource Include="Resources\Images\lock.png" />
+    <Resource Include="Resources\Images\logout.png" />
     <Content Include="Software Protector.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
