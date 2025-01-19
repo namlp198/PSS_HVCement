@@ -38,7 +38,7 @@ namespace PSS_HVCement.ViewModels
                 lstPrinter.Add(string.Format("MÁY IN {0}", i + 1));
             }
             Printers = lstPrinter;
-            m_reportView.cbbPrinters.SelectedIndex = 0;
+            //m_reportView.cbbPrinters.SelectedIndex = 0;
             m_reportView.tabReport.SelectedIndex = 0;
 
             m_reportView.btnExcelExport.Click += BtnExcelExport_Click;
