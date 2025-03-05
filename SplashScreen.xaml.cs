@@ -70,8 +70,20 @@ namespace PSS_HVCement
                 {
                     PrintersViewModel printerVM = new PrintersViewModel(printersView.Dispatcher, printersView);
                     printerVM.KGKJetPrinter1 = new KGKJetPrinterView(settingsVM.PrinterModels[0].IpPrinter, settingsVM.PrinterModels[0].Id);
+                    printerVM.KGKJetPrinter1.SetParamsDefault(settingsVM.PrinterModels[0].TextModule, settingsVM.PrinterModels[0].UseTimerCheckPrintState,
+                                                              settingsVM.PrinterModels[0].UseTimerCheckPrintCount, settingsVM.PrinterModels[0].CheckPrintStateDelay,
+                                                              settingsVM.PrinterModels[0].CheckPrintCountDelay, settingsVM.PrinterModels[0].IsResetPrintCount);
+
                     printerVM.KGKJetPrinter2 = new KGKJetPrinterView(settingsVM.PrinterModels[1].IpPrinter, settingsVM.PrinterModels[1].Id);
+                    printerVM.KGKJetPrinter2.SetParamsDefault(settingsVM.PrinterModels[1].TextModule, settingsVM.PrinterModels[1].UseTimerCheckPrintState,
+                                                              settingsVM.PrinterModels[1].UseTimerCheckPrintCount, settingsVM.PrinterModels[1].CheckPrintStateDelay,
+                                                              settingsVM.PrinterModels[1].CheckPrintCountDelay, settingsVM.PrinterModels[1].IsResetPrintCount);
+
                     printerVM.KGKJetPrinter3 = new KGKJetPrinterView(settingsVM.PrinterModels[2].IpPrinter, settingsVM.PrinterModels[2].Id);
+                    printerVM.KGKJetPrinter3.SetParamsDefault(settingsVM.PrinterModels[2].TextModule, settingsVM.PrinterModels[2].UseTimerCheckPrintState,
+                                                              settingsVM.PrinterModels[2].UseTimerCheckPrintCount, settingsVM.PrinterModels[2].CheckPrintStateDelay,
+                                                              settingsVM.PrinterModels[2].CheckPrintCountDelay, settingsVM.PrinterModels[2].IsResetPrintCount);
+
                     printersView.contentPrinter1.Content = printerVM.KGKJetPrinter1;
                     printersView.contentPrinter2.Content = printerVM.KGKJetPrinter2;
                     printersView.contentPrinter3.Content = printerVM.KGKJetPrinter3;

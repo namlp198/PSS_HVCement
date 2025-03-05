@@ -55,7 +55,13 @@ namespace PSS_12Printer.ViewModels
                 int.TryParse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "Id"), out int id);
                 model1.Id = id;
                 model1.IpPrinter = m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "IP");
-                model1.IsShowPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "IsShowPrintCount"), "true") == 1 ? true : false;
+                model1.IsShowPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "IsShowPrintCount"), "true") == 0 ? true : false;
+                model1.TextModule = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "TextModule"));
+                model1.UseTimerCheckPrintState = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "UseTimerCheckPrintState"), "true") == 0 ? true : false;
+                model1.UseTimerCheckPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "UseTimerCheckPrintCount"), "true") == 0 ? true : false;
+                model1.CheckPrintStateDelay = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "CheckPrintStateDelay"));
+                model1.CheckPrintCountDelay = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "CheckPrintCountDelay"));
+                model1.IsResetPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "IsResetPrintCount"), "true") == 0 ? true : false;
 
                 m_printerModels.Add(model1);
             }
@@ -68,7 +74,13 @@ namespace PSS_12Printer.ViewModels
                 int.TryParse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter02, "Id"), out int id);
                 model2.Id = id;
                 model2.IpPrinter = m_xmlManagement.GetAttributeValueFromNode(nodePrinter02, "IP");
-                model2.IsShowPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "IsShowPrintCount"), "true") == 1 ? true : false;
+                model2.IsShowPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "IsShowPrintCount"), "true") == 0 ? true : false;
+                model2.TextModule = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter02, "TextModule"));
+                model2.UseTimerCheckPrintState = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter02, "UseTimerCheckPrintState"), "true") == 0 ? true : false;
+                model2.UseTimerCheckPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter02, "UseTimerCheckPrintCount"), "true") == 0 ? true : false;
+                model2.CheckPrintStateDelay = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter02, "CheckPrintStateDelay"));
+                model2.CheckPrintCountDelay = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter02, "CheckPrintCountDelay"));
+                model2.IsResetPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter02, "IsResetPrintCount"), "true") == 0 ? true : false;
 
                 m_printerModels.Add(model2);
             }
@@ -81,7 +93,13 @@ namespace PSS_12Printer.ViewModels
                 int.TryParse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter03, "Id"), out int id);
                 model3.Id = id;
                 model3.IpPrinter = m_xmlManagement.GetAttributeValueFromNode(nodePrinter03, "IP");
-                model3.IsShowPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "IsShowPrintCount"), "true") == 1 ? true : false;
+                model3.IsShowPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "IsShowPrintCount"), "true") == 0 ? true : false;
+                model3.TextModule = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter03, "TextModule"));
+                model3.UseTimerCheckPrintState = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter03, "UseTimerCheckPrintState"), "true") == 0 ? true : false;
+                model3.UseTimerCheckPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter03, "UseTimerCheckPrintCount"), "true") == 0 ? true : false;
+                model3.CheckPrintStateDelay = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter03, "CheckPrintStateDelay"));
+                model3.CheckPrintCountDelay = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter03, "CheckPrintCountDelay"));
+                model3.IsResetPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter03, "IsResetPrintCount"), "true") == 0 ? true : false;
 
                 m_printerModels.Add(model3);
             }
