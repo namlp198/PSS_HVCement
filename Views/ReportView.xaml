@@ -118,7 +118,8 @@
                 <TabItem Header="BÁO CÁO HỆ THỐNG"
                          FontSize="18"
                          FontWeight="Bold"
-                         Name="tabItemSystemData">
+                         Name="tabItemSystemData" 
+                         Visibility="Collapsed">
                     <DataGrid Grid.Column="0"
                               FontSize="16"
                               FontWeight="Bold"

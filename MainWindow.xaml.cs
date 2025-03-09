@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSS_HVCement.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,8 @@ namespace PSS_HVCement
         }
         protected override void OnClosed(EventArgs e)
         {
+            MainWindowViewModel.Instance.SaveDailyResult();
+
             base.OnClosed(e);
 
             Application.Current.Shutdown();

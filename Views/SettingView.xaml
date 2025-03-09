@@ -18,15 +18,37 @@
                           VerticalAlignment="Top"
                           HorizontalAlignment="Left"
                           Content="Hiển thị số đếm in" />-->
+                    <Button Margin="10 20"
+                            Width="150"
+                            Height="30"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top" 
+                            Content="Reset Print Count"
+                            Name="btnResetPrintCount1"
+                            Click="btnResetPrintCount1_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Máy in 2"
                      FontWeight="SemiBold">
-
+                <Button Margin="10 20"
+                        Width="150"
+                        Height="30"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Reset Print Count"
+                        Name="btnResetPrintCount2"
+                        Click="btnResetPrintCount2_Click" />
             </TabItem>
             <TabItem Header="Máy in 3"
                      FontWeight="SemiBold">
-
+                <Button Margin="10 20"
+                        Width="150"
+                        Height="30"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Reset Print Count"
+                        Name="btnResetPrintCount3"
+                        Click="btnResetPrintCount3_Click" />
             </TabItem>
         </TabControl>
     </Grid>

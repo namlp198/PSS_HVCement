@@ -45,7 +45,7 @@ namespace PSS_HVCement.Manager
         #endregion
 
         #region Func
-        public void Initialize(int nNumberOfPrinter)
+        public void Initialize(int nNumberOfPrinter, bool bWriteLogPrinter = true)
         {
             CreateFolder(m_strProductionDataFolderPath);
             //CreateFolder(m_strReportFolderPath);
@@ -53,7 +53,7 @@ namespace PSS_HVCement.Manager
             m_strDailyProductionDataFolderPath = m_strProductionDataFolderPath + "\\DuLieu_" + DateTime.Now.ToString("dd-MM-yyyy");
             CreateFolder(m_strDailyProductionDataFolderPath);
 
-            CreateDataFile(nNumberOfPrinter);
+            CreateDataFile(nNumberOfPrinter, bWriteLogPrinter);
         }
         private void CreateFolder(string folderPath)
         {
@@ -69,7 +69,7 @@ namespace PSS_HVCement.Manager
                 MessageBox.Show(ex.Message);
             }
         }
-        private void CreateDataFile(int nNumberOfPrinter)
+        private void CreateDataFile(int nNumberOfPrinter, bool bWriteLogPrinter = true)
         {
             if (nNumberOfPrinter == 0)
                 return;
@@ -97,16 +97,19 @@ namespace PSS_HVCement.Manager
                     m_listProductionData.Add(productionData);
                 }
 
-                if (!File.Exists(sysData))
+                if (bWriteLogPrinter)
                 {
-                    using (File.Create(sysData)) 
-                    { 
+                    if (!File.Exists(sysData))
+                    {
+                        using (File.Create(sysData))
+                        {
+                            m_listSysData.Add(sysData);
+                        }
+                    }
+                    else
+                    {
                         m_listSysData.Add(sysData);
                     }
-                }
-                else
-                {
-                    m_listSysData.Add(sysData);
                 }
             }
         }

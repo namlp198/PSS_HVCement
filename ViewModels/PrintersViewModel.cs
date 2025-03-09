@@ -25,10 +25,16 @@ namespace PSS_HVCement.ViewModels
         public KGKJetPrinterView KGKJetPrinter2 { get => m_kgkPrinter2; set => m_kgkPrinter2 = value; }
         public KGKJetPrinterView KGKJetPrinter3 { get => m_kgkPrinter3; set => m_kgkPrinter3 = value; }
 
+        private readonly string m_sDate = string.Empty;
+        private readonly string m_sPrintCode = string.Empty;
+
         public PrintersViewModel(Dispatcher dispatcher, PrintersView printerView)
         {
             m_dispatcher = dispatcher;
             m_printerView = printerView;
+
+            m_sDate = DateTime.Now.ToString("dd/MM/yyyy");
+            m_sPrintCode = "NSX:" + m_sDate;
         }
         public void Initialize()
         {
@@ -36,9 +42,66 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter2.PrintCompletedEvent += m_kgkPrinter2_PrintCompletedEvent;
             m_kgkPrinter3.PrintCompletedEvent += m_kgkPrinter3_PrintCompletedEvent;
 
-            m_kgkPrinter1.ReportFromPrinterEvent += M_kgkPrinter1_ReportFromPrinterEvent;
-            m_kgkPrinter2.ReportFromPrinterEvent += M_kgkPrinter2_ReportFromPrinterEvent;
-            m_kgkPrinter3.ReportFromPrinterEvent += M_kgkPrinter3_ReportFromPrinterEvent;
+            m_kgkPrinter1.PrintCountIncreaseEvent += kgkPrinter1_PrintCountIncreaseEvent;
+            m_kgkPrinter2.PrintCountIncreaseEvent += kgkPrinter2_PrintCountIncreaseEvent;
+            m_kgkPrinter3.PrintCountIncreaseEvent += kgkPrinter3_PrintCountIncreaseEvent;
+
+            //m_kgkPrinter1.ReportFromPrinterEvent += M_kgkPrinter1_ReportFromPrinterEvent;
+            //m_kgkPrinter2.ReportFromPrinterEvent += M_kgkPrinter2_ReportFromPrinterEvent;
+            //m_kgkPrinter3.ReportFromPrinterEvent += M_kgkPrinter3_ReportFromPrinterEvent;
+
+            m_kgkPrinter1.IsVisibleStackShiftProduction = false;
+            m_kgkPrinter2.IsVisibleStackShiftProduction = false;
+            m_kgkPrinter3.IsVisibleStackShiftProduction = false;
+        }
+
+        private void kgkPrinter1_PrintCountIncreaseEvent(uint nPrintCount)
+        {
+            // record to database
+            List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
+            ExcelProductionDataModel excelModel = new ExcelProductionDataModel();
+            excelModel.PDate = m_sDate;
+            excelModel.PStartTime = "";
+            excelModel.PEndTime = DateTime.Now.ToString("HH:mm:ss");
+            excelModel.PShift = "";
+            excelModel.DeliveryCode = "";
+            excelModel.PrintCode = m_sPrintCode;
+            excelModel.PrintCount = (int)nPrintCount;
+
+            excelProductionDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 1);
+        }
+        private void kgkPrinter2_PrintCountIncreaseEvent(uint nPrintCount)
+        {
+            // record to database
+            List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
+            ExcelProductionDataModel excelModel = new ExcelProductionDataModel();
+            excelModel.PDate = m_sDate;
+            excelModel.PStartTime = "";
+            excelModel.PEndTime = DateTime.Now.ToString("HH:mm:ss");
+            excelModel.PShift = "";
+            excelModel.DeliveryCode = "";
+            excelModel.PrintCode = m_sPrintCode;
+            excelModel.PrintCount = (int)nPrintCount;
+
+            excelProductionDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 2);
+        }
+        private void kgkPrinter3_PrintCountIncreaseEvent(uint nPrintCount)
+        {
+            // record to database
+            List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
+            ExcelProductionDataModel excelModel = new ExcelProductionDataModel();
+            excelModel.PDate = m_sDate;
+            excelModel.PStartTime = "";
+            excelModel.PEndTime = DateTime.Now.ToString("HH:mm:ss");
+            excelModel.PShift = "";
+            excelModel.DeliveryCode = "";
+            excelModel.PrintCode = m_sPrintCode;
+            excelModel.PrintCount = (int)nPrintCount;
+
+            excelProductionDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 3);
         }
 
         private void M_kgkPrinter3_ReportFromPrinterEvent(string data)

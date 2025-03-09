@@ -5,6 +5,7 @@ using PSS_HVCement.Common;
 using PSS_HVCement.Manager;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace PSS_HVCement.ViewModels
         private MainWindow m_mainView;
         public MainWindow MainView { get => m_mainView; set => m_mainView = value; }
 
+        int[] arrPrintCountYes;
+
         #region Singleton
         private static MainWindowViewModel m_instance;
         public static MainWindowViewModel Instance
@@ -28,7 +31,7 @@ namespace PSS_HVCement.ViewModels
         }
         #endregion
         public MainWindowViewModel(Dispatcher dispatcher, MainWindow mainView, SettingsViewModel settingsVM, PrintersViewModel printersVM,
-                                   DataCustomerViewModel dataCusVM) 
+                                   DataCustomerViewModel dataCusVM)
         {
             if (m_instance == null) m_instance = this;
             else return;
@@ -46,9 +49,13 @@ namespace PSS_HVCement.ViewModels
             this.OpenLoginViewCmd = new OpenLoginViewCmd();
 
             // Create report
-            Csv_Manager.Instance.Initialize(SettingsVM.NumberOfPrinter);
+            Csv_Manager.Instance.Initialize(SettingsVM.NumberOfPrinter, false);
 
             LoginViewModel.LoginSystemSuccessEvent += LoginSystemEventHandle;
+
+            arrPrintCountYes = new int[SettingsVM.NumberOfPrinter];
+            CreateDailyResult();
+            LoadDailyResultYes();
         }
 
         #region ViewModels
@@ -89,6 +96,47 @@ namespace PSS_HVCement.ViewModels
                     break;
             }
         }
+        private void CreateDailyResult()
+        {
+            string date = "Result" + DateTime.Now.ToString("ddMMyy");
+            string fileName = Defines.STARTUP_PROG_PATH + "\\DailyResult\\" + date + ".txt";
+
+            if (!File.Exists(fileName))
+            {
+                File.Create(fileName);
+            }
+        }
+        public void SaveDailyResult()
+        {
+            string date = "Result" + DateTime.Now.ToString("ddMMyy");
+            string fileName = Defines.STARTUP_PROG_PATH + "\\DailyResult\\" + date + ".txt";
+
+            string[] arr = new string[arrPrintCountYes.Length];
+            for (int i = 0; i < SettingsVM.NumberOfPrinter; i++)
+            {
+                arr[i] = arrPrintCountYes[i].ToString();
+            }
+
+            File.WriteAllLines(fileName, arr);
+        }
+        private void LoadDailyResultYes()
+        {
+            string dateYes = "Result" + DateTime.Now.AddDays(-1).ToString("ddMMyy");
+            string fileNameYes = Defines.STARTUP_PROG_PATH + "\\DailyResult\\" + dateYes + ".txt";
+
+            if (!File.Exists(fileNameYes))
+            {
+                return;
+            }
+
+            using (StreamReader rd = File.OpenText(fileNameYes))
+            {
+                for (int i = 0; i < SettingsVM.NumberOfPrinter; i++)
+                {
+                    arrPrintCountYes[i] = Convert.ToInt32(rd.ReadLine());
+                }
+            }
+        }
 
         private string m_displayImage_LoginStatusPath = "/Resources/Images/account.png";
         public string DisplayImage_LoginStatusPath
@@ -124,7 +172,7 @@ namespace PSS_HVCement.ViewModels
             get => m_bAllowOperation;
             set
             {
-                if(SetProperty(ref m_bAllowOperation, value))
+                if (SetProperty(ref m_bAllowOperation, value))
                 {
 
                 }
@@ -137,7 +185,7 @@ namespace PSS_HVCement.ViewModels
             get => m_dOpacity;
             set
             {
-                if(SetProperty(ref m_dOpacity, value))
+                if (SetProperty(ref m_dOpacity, value))
                 {
 
                 }

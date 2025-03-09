@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSS_HVCement.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,21 @@ namespace PSS_HVCement.Views
         public SettingView()
         {
             InitializeComponent();
+        }
+
+        private void btnResetPrintCount1_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel.Instance.PrintersVM.KGKJetPrinter1.ResetPrintCount();
+        }
+
+        private void btnResetPrintCount2_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel.Instance.PrintersVM.KGKJetPrinter2.ResetPrintCount();
+        }
+
+        private void btnResetPrintCount3_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel.Instance.PrintersVM.KGKJetPrinter3.ResetPrintCount();
         }
     }
 }
