@@ -17,15 +17,18 @@ namespace PSS_12Printer.ViewModels
         private readonly Dispatcher m_dispatcher;
         private SettingView m_settingView;
         private List<PrinterModel> m_printerModels = new List<PrinterModel>();
+        private SystemModel m_sysModel = new SystemModel();
         private XmlManagement m_xmlManagement = new XmlManagement();
 
         public SettingView PrinterView { get { return m_settingView; } set { m_settingView = value; } }
         public List<PrinterModel> PrinterModels { get => m_printerModels; set { m_printerModels = value; } }
+        public SystemModel SysModel { get => m_sysModel; set {  m_sysModel = value; } }
         public SettingsViewModel(Dispatcher dispatcher, SettingView settingView)
         {
             m_dispatcher = dispatcher;
             m_settingView = settingView;
 
+            LoadSysSettings();
             LoadSettings();
         }
 
@@ -107,6 +110,24 @@ namespace PSS_12Printer.ViewModels
             NumberOfPrinter = m_printerModels.Count;
 
             m_xmlManagement.Close();
+        }
+        private void LoadSysSettings()
+        {
+            string settingsPath = Defines.STARTUP_PROG_PATH + "\\Settings.config";
+
+            m_xmlManagement.Load(settingsPath);
+
+            // System setting
+            XmlNode nodeServer = m_xmlManagement.SelectSingleNode("//Configurations//Systems//Server");
+
+            if(nodeServer != null)
+            {
+                SystemModel sysModel = new SystemModel();
+                sysModel.IP = m_xmlManagement.GetAttributeValueFromNode(nodeServer, "IP");
+                sysModel.Port = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodeServer, "Port"));
+
+                m_sysModel = sysModel;
+            }
         }
     }
 }

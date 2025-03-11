@@ -42,17 +42,21 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter2.PrintCompletedEvent += m_kgkPrinter2_PrintCompletedEvent;
             m_kgkPrinter3.PrintCompletedEvent += m_kgkPrinter3_PrintCompletedEvent;
 
-            m_kgkPrinter1.PrintCountIncreaseEvent += kgkPrinter1_PrintCountIncreaseEvent;
-            m_kgkPrinter2.PrintCountIncreaseEvent += kgkPrinter2_PrintCountIncreaseEvent;
-            m_kgkPrinter3.PrintCountIncreaseEvent += kgkPrinter3_PrintCountIncreaseEvent;
+            //m_kgkPrinter1.PrintCountIncreaseEvent += kgkPrinter1_PrintCountIncreaseEvent;
+            //m_kgkPrinter2.PrintCountIncreaseEvent += kgkPrinter2_PrintCountIncreaseEvent;
+            //m_kgkPrinter3.PrintCountIncreaseEvent += kgkPrinter3_PrintCountIncreaseEvent;
 
-            //m_kgkPrinter1.ReportFromPrinterEvent += M_kgkPrinter1_ReportFromPrinterEvent;
-            //m_kgkPrinter2.ReportFromPrinterEvent += M_kgkPrinter2_ReportFromPrinterEvent;
-            //m_kgkPrinter3.ReportFromPrinterEvent += M_kgkPrinter3_ReportFromPrinterEvent;
+            m_kgkPrinter1.ReportFromPrinterEvent += M_kgkPrinter1_ReportFromPrinterEvent;
+            m_kgkPrinter2.ReportFromPrinterEvent += M_kgkPrinter2_ReportFromPrinterEvent;
+            m_kgkPrinter3.ReportFromPrinterEvent += M_kgkPrinter3_ReportFromPrinterEvent;
 
-            m_kgkPrinter1.IsVisibleStackShiftProduction = false;
-            m_kgkPrinter2.IsVisibleStackShiftProduction = false;
-            m_kgkPrinter3.IsVisibleStackShiftProduction = false;
+            m_kgkPrinter1.IsVisibleStackShiftProduction = true;
+            m_kgkPrinter2.IsVisibleStackShiftProduction = true;
+            m_kgkPrinter3.IsVisibleStackShiftProduction = true;
+
+            m_kgkPrinter1.UseAutoMode = true;
+            m_kgkPrinter2.UseAutoMode = true;
+            m_kgkPrinter3.UseAutoMode = true;
         }
 
         private void kgkPrinter1_PrintCountIncreaseEvent(uint nPrintCount)

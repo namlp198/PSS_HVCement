@@ -1,4 +1,5 @@
 ﻿using MVVMBasic;
+using Ndev.NNetSocket;
 using PSS_12Printer.ViewModels;
 using PSS_HVCement.Commands.Cmd;
 using PSS_HVCement.Common;
@@ -9,7 +10,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace PSS_HVCement.ViewModels
@@ -19,6 +22,10 @@ namespace PSS_HVCement.ViewModels
         private readonly Dispatcher m_dispatcher;
         private MainWindow m_mainView;
         public MainWindow MainView { get => m_mainView; set => m_mainView = value; }
+
+        private NClientSocket m_socket;
+
+        private bool m_bConnectedServer = false;
 
         int[] arrPrintCountYes;
 
@@ -49,19 +56,68 @@ namespace PSS_HVCement.ViewModels
             this.OpenLoginViewCmd = new OpenLoginViewCmd();
 
             // Create report
-            Csv_Manager.Instance.Initialize(SettingsVM.NumberOfPrinter, false);
+            Csv_Manager.Instance.Initialize(SettingsVM.NumberOfPrinter, true);
 
             LoginViewModel.LoginSystemSuccessEvent += LoginSystemEventHandle;
+
+            m_socket = new NClientSocket(SettingsVM.SysModel.IP, SettingsVM.SysModel.Port);
+            m_socket.ConnectionEventCallback += M_socket_ConnectionEventCallback;
+
+            m_socket.ClientConnect();
 
             arrPrintCountYes = new int[SettingsVM.NumberOfPrinter];
             CreateDailyResult();
             LoadDailyResultYes();
         }
 
+        private void M_socket_ConnectionEventCallback(NClientSocket.EConnectionEventClient e, object obj)
+        {
+            switch (e)
+            {
+                case NClientSocket.EConnectionEventClient.RECEIVEDATA:
+                    string s = m_socket.ReceiveString;
+
+                    PrintersVM.KGKJetPrinter1.Dispatcher.Invoke(new Action(() =>
+                    {
+                        PrintersVM.KGKJetPrinter1.MessageContent = s;
+                        PrintersVM.KGKJetPrinter1.PerformPushMessage();
+                    }));
+                    break;
+                case NClientSocket.EConnectionEventClient.CLIENTCONNECTED:
+                    IsConnectedServer = true;
+                    break;
+                case NClientSocket.EConnectionEventClient.CLIENTDISCONNECTED:
+                    IsConnectedServer = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         #region ViewModels
         public PrintersViewModel PrintersVM { get; set; }
         public DataCustomerViewModel DataCustomerVM { get; set; }
         public SettingsViewModel SettingsVM { get; set; }
+        public bool IsConnectedServer
+        {
+            get => m_bConnectedServer;
+            set
+            {
+                if(SetProperty(ref m_bConnectedServer, value))
+                {
+                    if(m_bConnectedServer)
+                    {
+                        MainView.labelStatusServer.Content = "Đã kết nối Server";
+                        MainView.labelStatusServer.Foreground = Brushes.Green;
+                    }
+                    else
+                    {
+                        MainView.labelStatusServer.Content = "Chưa kết nối Server";
+                        MainView.labelStatusServer.Foreground = Brushes.Red;
+                    }
+                }
+            }
+        }
         #endregion
 
         private void LoginSystemEventHandle(emLoginStatus eStatus, emRole eRole)

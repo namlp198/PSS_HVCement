@@ -58,16 +58,16 @@ namespace PSS_HVCement.ViewModels
                     int nPrinterOrder = m_reportView.cbbPrinters.SelectedIndex + 1;
 
                     string productionDataFileName = string.Format("DuLieuSanXuat_MAYIN{0}.csv", nPrinterOrder);
-                    //string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
+                    string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
 
                     string productionDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + productionDataFileName;
-                    //string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
+                    string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
 
                     List<ExcelProductionDataModel> productionDataModels = Csv_Manager.Instance.ReadExcelProductionDataModelFromCsv(productionDataFilePath);
-                    //List<ExcelSystemDataModel> sysDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(sysDataFilePath);
+                    List<ExcelSystemDataModel> sysDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(sysDataFilePath);
 
                     ExcelProductionDataModels = productionDataModels;
-                    //ExcelSystemDataModels = sysDataModels;
+                    ExcelSystemDataModels = sysDataModels;
                 }
             }
         }
@@ -86,27 +86,27 @@ namespace PSS_HVCement.ViewModels
             {
                 int nPrinterOrder = i + 1;
                 string productionDataFileName = string.Format("DuLieuSanXuat_MAYIN{0}.csv", nPrinterOrder);
-                //string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
+                string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
 
                 string productionDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + productionDataFileName;
-                //string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
+                string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
 
                 List<ExcelProductionDataModel> excelProductionDataModels = Csv_Manager.Instance.ReadExcelProductionDataModelFromCsv(productionDataFilePath);
-                //List<ExcelSystemDataModel> excelSystemDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(sysDataFilePath);
+                List<ExcelSystemDataModel> excelSystemDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(sysDataFilePath);
 
                 switch (nPrinterOrder)
                 {
                     case 1:
                         await Excel_Manager.Instance.ExportProductionData(excelProductionDataModels, "BaoCaoSanXuat_MAYIN1", 3);
-                        //await Excel_Manager.Instance.ExportSystemData(excelSystemDataModels, "BaoCaoHeThong_MAYIN1", 3);
+                        await Excel_Manager.Instance.ExportSystemData(excelSystemDataModels, "BaoCaoHeThong_MAYIN1", 3);
                         break;
                     case 2:
                         await Excel_Manager.Instance.ExportProductionData(excelProductionDataModels, "BaoCaoSanXuat_MAYIN2", 3);
-                        //await Excel_Manager.Instance.ExportSystemData(excelSystemDataModels, "BaoCaoHeThong_MAYIN2", 3);
+                        await Excel_Manager.Instance.ExportSystemData(excelSystemDataModels, "BaoCaoHeThong_MAYIN2", 3);
                         break;
                     case 3:
                         await Excel_Manager.Instance.ExportProductionData(excelProductionDataModels, "BaoCaoSanXuat_MAYIN3", 3);
-                        //await Excel_Manager.Instance.ExportSystemData(excelSystemDataModels, "BaoCaoHeThong_MAYIN3", 3);
+                        await Excel_Manager.Instance.ExportSystemData(excelSystemDataModels, "BaoCaoHeThong_MAYIN3", 3);
                         break;
                 }
             }
@@ -131,27 +131,27 @@ namespace PSS_HVCement.ViewModels
             Excel_Manager.Instance.StartAppExcel(reportFileName);
 
             string productionDataFileName = string.Format("DuLieuSanXuat_MAYIN{0}.csv", nPrinterOrder);
-            //string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
+            string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
 
             string productionDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + productionDataFileName;
-            //string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
+            string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
 
             switch (nPrinterOrder)
             {
                 // MAY IN 1
                 case 1:
                     await Excel_Manager.Instance.ExportProductionData(ExcelProductionDataModels, "BaoCaoSanXuat_MAYIN1", 3);
-                    //await Excel_Manager.Instance.ExportSystemData(ExcelSystemDataModels, "BaoCaoHeThong_MAYIN1", 3);
+                    await Excel_Manager.Instance.ExportSystemData(ExcelSystemDataModels, "BaoCaoHeThong_MAYIN1", 3);
                     break;
                 // MAY IN 2
                 case 2:
                     await Excel_Manager.Instance.ExportProductionData(ExcelProductionDataModels, "BaoCaoSanXuat_MAYIN2", 3);
-                    //await Excel_Manager.Instance.ExportSystemData(ExcelSystemDataModels, "BaoCaoHeThong_MAYIN2", 3);
+                    await Excel_Manager.Instance.ExportSystemData(ExcelSystemDataModels, "BaoCaoHeThong_MAYIN2", 3);
                     break;
                 // MAY IN 3
                 case 3:
                     await Excel_Manager.Instance.ExportProductionData(ExcelProductionDataModels, "BaoCaoSanXuat_MAYIN3", 3);
-                    //await Excel_Manager.Instance.ExportSystemData(ExcelSystemDataModels, "BaoCaoHeThong_MAYIN3", 3);
+                    await Excel_Manager.Instance.ExportSystemData(ExcelSystemDataModels, "BaoCaoHeThong_MAYIN3", 3);
                     break;
             }
 
@@ -230,16 +230,16 @@ namespace PSS_HVCement.ViewModels
                     int nPrinterOrder = m_reportView.cbbPrinters.SelectedIndex + 1;
 
                     string productionDataFileName = string.Format("DuLieuSanXuat_MAYIN{0}.csv", nPrinterOrder);
-                    //string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
+                    string sysDataFileName = string.Format("DuLieuHeThong_MAYIN{0}.csv", nPrinterOrder);
 
                     string productionDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + productionDataFileName;
-                   // string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
+                    string sysDataFilePath = Csv_Manager.Instance.ProductionDataFolderPath + "\\DuLieu_" + datetime.ToString("dd-MM-yyyy") + "\\" + sysDataFileName;
 
                     List<ExcelProductionDataModel> excelProductionDataModels = Csv_Manager.Instance.ReadExcelProductionDataModelFromCsv(productionDataFilePath);
-                    //List<ExcelSystemDataModel> excelSystemDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(sysDataFilePath);
+                    List<ExcelSystemDataModel> excelSystemDataModels = Csv_Manager.Instance.ReadExcelSysDataModelFromCsv(sysDataFilePath);
 
                     ExcelProductionDataModels = excelProductionDataModels;
-                    //ExcelSystemDataModels = excelSystemDataModels;
+                    ExcelSystemDataModels = excelSystemDataModels;
 
                 }
             }

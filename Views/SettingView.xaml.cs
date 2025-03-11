@@ -39,5 +39,15 @@ namespace PSS_HVCement.Views
         {
             MainWindowViewModel.Instance.PrintersVM.KGKJetPrinter3.ResetPrintCount();
         }
+
+        private void chkUseCheckPrintCount_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chkUseCheckPrintCount_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

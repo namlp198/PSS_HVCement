@@ -119,7 +119,7 @@
                          FontSize="18"
                          FontWeight="Bold"
                          Name="tabItemSystemData" 
-                         Visibility="Collapsed">
+                         Visibility="Visible">
                     <DataGrid Grid.Column="0"
                               FontSize="16"
                               FontWeight="Bold"

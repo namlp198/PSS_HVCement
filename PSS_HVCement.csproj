@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>output\NhaMayCam\</OutputPath>
+    <OutputPath>output\XMXS\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -110,11 +110,13 @@
     <Compile Include="Manager\Csv_Manager.cs" />
     <Compile Include="Manager\ExcelParser.cs" />
     <Compile Include="Manager\Excel_Manager.cs" />
+    <Compile Include="Manager\NClientSocket.cs" />
     <Compile Include="Models\DataCustomerModel.cs" />
     <Compile Include="Models\ExcelProductionDataModel.cs" />
     <Compile Include="Models\ExcelSystemDataModel.cs" />
     <Compile Include="Models\ExcelTemplateModel.cs" />
     <Compile Include="Models\PrinterModel.cs" />
+    <Compile Include="Models\SystemModel.cs" />
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>

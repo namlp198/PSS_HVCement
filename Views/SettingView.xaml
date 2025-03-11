@@ -26,6 +26,21 @@
                             Content="Reset Print Count"
                             Name="btnResetPrintCount1"
                             Click="btnResetPrintCount1_Click"/>
+                    <CheckBox Content="Use Select Shift"
+                              Margin="10 60"
+                              Height="25"
+                              Width="200"
+                              VerticalAlignment="Top"
+                              HorizontalAlignment="Left"/>
+                    <CheckBox Content="Use Check Print Count"
+                              Margin="10 90"
+                              Height="25"
+                              Width="200"
+                              VerticalAlignment="Top"
+                              HorizontalAlignment="Left" 
+                              Name="chkUseCheckPrintCount"
+                              Checked="chkUseCheckPrintCount_Checked"
+                              Unchecked="chkUseCheckPrintCount_Unchecked"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Máy in 2"
