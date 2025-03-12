@@ -50,6 +50,10 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter2.ReportFromPrinterEvent += M_kgkPrinter2_ReportFromPrinterEvent;
             m_kgkPrinter3.ReportFromPrinterEvent += M_kgkPrinter3_ReportFromPrinterEvent;
 
+            m_kgkPrinter1.PrinterStatusChangeEvent += M_kgkPrinter1_PrinterStatusChangeEvent;
+            m_kgkPrinter2.PrinterStatusChangeEvent += M_kgkPrinter2_PrinterStatusChangeEvent;
+            m_kgkPrinter3.PrinterStatusChangeEvent += M_kgkPrinter3_PrinterStatusChangeEvent;
+
             m_kgkPrinter1.IsVisibleStackShiftProduction = true;
             m_kgkPrinter2.IsVisibleStackShiftProduction = true;
             m_kgkPrinter3.IsVisibleStackShiftProduction = true;
@@ -57,6 +61,28 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter1.UseAutoMode = true;
             m_kgkPrinter2.UseAutoMode = true;
             m_kgkPrinter3.UseAutoMode = true;
+        }
+
+        private void M_kgkPrinter1_PrinterStatusChangeEvent(enPrinterStatus printerStatus)
+        {
+            MainWindowViewModel.Instance.MainView.Dispatcher.Invoke(new Action(() =>
+            {
+                MainWindowViewModel.Instance.SendPrinterStatus("01", (int)printerStatus);
+            }));
+        }
+        private void M_kgkPrinter2_PrinterStatusChangeEvent(enPrinterStatus printerStatus)
+        {
+            MainWindowViewModel.Instance.MainView.Dispatcher.Invoke(new Action(() =>
+            {
+                MainWindowViewModel.Instance.SendPrinterStatus("02", (int)printerStatus);
+            }));
+        }
+        private void M_kgkPrinter3_PrinterStatusChangeEvent(enPrinterStatus printerStatus)
+        {
+            MainWindowViewModel.Instance.MainView.Dispatcher.Invoke(new Action(() =>
+            {
+                MainWindowViewModel.Instance.SendPrinterStatus("03", (int)printerStatus);
+            }));
         }
 
         private void kgkPrinter1_PrintCountIncreaseEvent(uint nPrintCount)

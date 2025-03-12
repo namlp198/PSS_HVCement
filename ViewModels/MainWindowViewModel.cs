@@ -75,13 +75,49 @@ namespace PSS_HVCement.ViewModels
             switch (e)
             {
                 case NClientSocket.EConnectionEventClient.RECEIVEDATA:
-                    string s = m_socket.ReceiveString;
 
-                    PrintersVM.KGKJetPrinter1.Dispatcher.Invoke(new Action(() =>
+                    //format: *11@!?PP|Content#
+                    if (m_socket.ReceiveString == null)
+                        return;
+                    if (m_socket.ReceiveString.Length < 6)
+                        return;
+
+                    int length = m_socket.ReceiveString.Length;
+                    int idx_1 = m_socket.ReceiveString.IndexOf('?');
+                    int idx_2 = m_socket.ReceiveString.IndexOf('|');
+
+                    if (idx_1 < 0 || idx_2 < 0) return;
+
+                    string printer = m_socket.ReceiveString.Substring(idx_1 + 1, 2);
+                    if (printer == null) return;
+
+                    string content = m_socket.ReceiveString.Substring(idx_2 + 1, length - 10);
+                    if (content == null) return;
+
+                    switch (printer)
                     {
-                        PrintersVM.KGKJetPrinter1.MessageContent = s;
-                        PrintersVM.KGKJetPrinter1.PerformPushMessage();
-                    }));
+                        case "01":
+                            PrintersVM.KGKJetPrinter1.Dispatcher.Invoke(new Action(() =>
+                            {
+                                PrintersVM.KGKJetPrinter1.MessageContent = content;
+                                PrintersVM.KGKJetPrinter1.PerformPushMessage();
+                            }));
+                            break;
+                        case "02":
+                            PrintersVM.KGKJetPrinter2.Dispatcher.Invoke(new Action(() =>
+                            {
+                                PrintersVM.KGKJetPrinter2.MessageContent = content;
+                                PrintersVM.KGKJetPrinter2.PerformPushMessage();
+                            }));
+                            break;
+                        case "03":
+                            PrintersVM.KGKJetPrinter3.Dispatcher.Invoke(new Action(() =>
+                            {
+                                PrintersVM.KGKJetPrinter3.MessageContent = content;
+                                PrintersVM.KGKJetPrinter3.PerformPushMessage();
+                            }));
+                            break;
+                    }
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTCONNECTED:
                     IsConnectedServer = true;
@@ -103,9 +139,9 @@ namespace PSS_HVCement.ViewModels
             get => m_bConnectedServer;
             set
             {
-                if(SetProperty(ref m_bConnectedServer, value))
+                if (SetProperty(ref m_bConnectedServer, value))
                 {
-                    if(m_bConnectedServer)
+                    if (m_bConnectedServer)
                     {
                         MainView.labelStatusServer.Content = "Đã kết nối Server";
                         MainView.labelStatusServer.Foreground = Brushes.Green;
@@ -192,6 +228,18 @@ namespace PSS_HVCement.ViewModels
                     arrPrintCountYes[i] = Convert.ToInt32(rd.ReadLine());
                 }
             }
+        }
+
+        public void SendPrinterStatus(string printer, int status)
+        {
+            if (m_socket == null)
+                return;
+
+            if (!m_socket.IsConnected)
+                return;
+
+            string cmd = "*100@!?" + printer + "|" + status + "#";
+            m_socket.SendMsg(cmd);
         }
 
         private string m_displayImage_LoginStatusPath = "/Resources/Images/account.png";
