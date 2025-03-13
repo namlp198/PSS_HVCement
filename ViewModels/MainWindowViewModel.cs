@@ -1,4 +1,5 @@
-﻿using MVVMBasic;
+﻿using DocumentFormat.OpenXml.Presentation;
+using MVVMBasic;
 using Ndev.NNetSocket;
 using PSS_12Printer.ViewModels;
 using PSS_HVCement.Commands.Cmd;
@@ -79,6 +80,13 @@ namespace PSS_HVCement.ViewModels
                     //format: *11@!?PP|Content#
                     if (m_socket.ReceiveString == null)
                         return;
+
+                    // show receive data
+                    MainView.Dispatcher.Invoke(new Action(() =>
+                    {
+                        MainView.labelReceiveData.Content = m_socket.ReceiveString;
+                    }));
+
                     if (m_socket.ReceiveString.Length < 6)
                         return;
 
@@ -239,6 +247,13 @@ namespace PSS_HVCement.ViewModels
                 return;
 
             string cmd = "*100@!?" + printer + "|" + status + "#";
+
+            // show send data
+            MainView.Dispatcher.Invoke(new Action(() =>
+            {
+                MainView.labelSendData.Content = cmd;
+            }));
+
             m_socket.SendMsg(cmd);
         }
 
