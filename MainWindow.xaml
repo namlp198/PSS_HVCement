@@ -40,6 +40,11 @@
                    FontSize="12"
                    Name="labelReceiveData"
                    Visibility="Visible" />
+            <Button VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    Margin="5 2 5 2"
+                    Content="Test send data"
+                    Click="Button_Click"/>
         </StackPanel>
         <Button VerticalAlignment="Center"
                 HorizontalAlignment="Right"
