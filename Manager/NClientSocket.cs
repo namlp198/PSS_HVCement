@@ -19,12 +19,14 @@ namespace Ndev.NNetSocket
             CLIENTCONNECTED,
             CLIENTDISCONNECTED
         }
+
+        System.Timers.Timer m_timReconnect = new System.Timers.Timer();
         #endregion
 
         #region Constructor
         public NClientSocket()
         {
-
+            m_timReconnect.Interval = 8000;
         }
         public NClientSocket(string ipaddress, int port)
         {
@@ -36,6 +38,14 @@ namespace Ndev.NNetSocket
             }
             this.IpAddress = ipaddress;
             this.Port = port;
+            m_timReconnect.Start();
+            m_timReconnect.Elapsed += M_timReconnect_Elapsed;
+        }
+
+        private void M_timReconnect_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (!m_clientSocket.Connected)
+                ClientConnect();
         }
         #endregion
 
@@ -152,6 +162,7 @@ namespace Ndev.NNetSocket
             }
             catch (Exception ex)
             {
+                ClientDisconnect();
                 this.m_errorMsg = ex.Message;
                 result = false;
             }
@@ -409,6 +420,7 @@ namespace Ndev.NNetSocket
             catch (Exception ex)
             {
                 m_errorMsg = ex.Message;
+                ClientDisconnect();
                 ClientErrorEventCallback?.Invoke(m_errorMsg);
             }
         }
@@ -423,6 +435,12 @@ namespace Ndev.NNetSocket
                 CSocketPacket theSocketId = (CSocketPacket)asyn.AsyncState;
                 int iRx = 0;
                 iRx = theSocketId.thisSocket.EndReceive(asyn);
+
+                if(iRx < 0)
+                {
+                    ClientDisconnect();
+                }
+
                 char[] chars = new char[iRx];
                 //System.Text.Decoder decoder = System.Text.Encoding.UTF8.GetDecoder();
                 //int charLen = decoder.GetChars(theSocketId.dataBuffer, 0, iRx, chars, 0);
@@ -437,6 +455,7 @@ namespace Ndev.NNetSocket
             catch (Exception ex)
             {
                 m_errorMsg = ex.Message;
+                ClientDisconnect();
                 ClientErrorEventCallback?.Invoke(m_errorMsg);
             }
         }
@@ -447,6 +466,11 @@ namespace Ndev.NNetSocket
                 CSocketPacket theSocketId = (CSocketPacket)asyn.AsyncState;
                 int iRx = 0;
                 iRx = theSocketId.thisSocket.EndReceive(asyn);
+                if (iRx < 0)
+                {
+                    ClientDisconnect();
+                }
+
                 char[] chars = new char[iRx];
                 //System.Text.Decoder decoder = System.Text.Encoding.UTF8.GetDecoder();
                 //int charLen = decoder.GetChars(theSocketId.dataBuffer, 0, iRx, chars, 0);
@@ -461,6 +485,7 @@ namespace Ndev.NNetSocket
             catch (Exception ex)
             {
                 m_errorMsg = ex.Message;
+                ClientDisconnect();
                 ClientErrorEventCallback?.Invoke(m_errorMsg);
             }
         }
@@ -469,6 +494,9 @@ namespace Ndev.NNetSocket
         #region Event
         public delegate void ConnectionEventHandler(EConnectionEventClient e, object obj);
         public event ConnectionEventHandler ConnectionEventCallback;
+
+        public delegate void DisconnectedEventHandler(EConnectionEventClient e, object obj);
+        public event DisconnectedEventHandler DisconnectedEventCallback;
 
         public delegate void ErrorEventHandler(string errorMsg);
         public event ErrorEventHandler ClientErrorEventCallback;
