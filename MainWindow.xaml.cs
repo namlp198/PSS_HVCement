@@ -22,6 +22,15 @@ namespace PSS_HVCement
     public partial class MainWindow : Window
     {
         bool m_bFlag = false;
+
+        int[] arr_1 = new int[6]
+        {
+            1, 1, 1, 3 , 3, 3
+        };
+        int[] arr_2 = new int[6]
+       {
+            1, 1, 1, 3 , 3, 3
+       };
         public MainWindow()
         {
             InitializeComponent();
@@ -41,18 +50,28 @@ namespace PSS_HVCement
             {
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    MainWindowViewModel.Instance.SendPrinterStatus("01", 1);
+                    MainWindowViewModel.Instance.SendPrinterStatus("01", arr_1);
                 }));
             }
             else
             {
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    MainWindowViewModel.Instance.SendPrinterStatus("01", 2);
+                    MainWindowViewModel.Instance.SendPrinterStatus("01", arr_2);
                 }));
             }
 
             m_bFlag = !m_bFlag;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnReconnet_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel.Instance.ReconnectServer();
         }
     }
 }

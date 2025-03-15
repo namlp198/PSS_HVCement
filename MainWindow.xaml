@@ -127,6 +127,16 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
+        <Button VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Margin="0 2 145 2"
+                Content="Reconnect"
+                Width="100"
+                FontSize="12"
+                Name="btnReconnet"
+                Click="btnReconnet_Click">
+            
+        </Button>
         <ContentControl Grid.Row="1" x:Name="contentPrinters" />
         <ContentControl x:Name="contentData"
                         Grid.Row="2"

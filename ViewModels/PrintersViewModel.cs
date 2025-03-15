@@ -1,4 +1,5 @@
-﻿using JetPrinter.ui;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using JetPrinter.ui;
 using MVVMBasic;
 using PSS_HVCement.Manager;
 using PSS_HVCement.Models;
@@ -7,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Threading;
 
 namespace PSS_HVCement.ViewModels
@@ -28,14 +31,21 @@ namespace PSS_HVCement.ViewModels
         private readonly string m_sDate = string.Empty;
         private readonly string m_sPrintCode = string.Empty;
 
+        int[] m_arrDataSend = new int[6] { 3, 3, 3, 3, 3, 3}; // khi khong co may in hoac khong ket noi thi gui 3
+        private System.Timers.Timer m_timSendData = new System.Timers.Timer();
+
         public PrintersViewModel(Dispatcher dispatcher, PrintersView printerView)
         {
             m_dispatcher = dispatcher;
             m_printerView = printerView;
 
+            m_timSendData.Interval = 5000;
+            m_timSendData.Elapsed += M_timSendData_Elapsed;
+
             m_sDate = DateTime.Now.ToString("dd/MM/yyyy");
             m_sPrintCode = "NSX:" + m_sDate;
         }
+
         public void Initialize()
         {
             m_kgkPrinter1.PrintCompletedEvent += m_kgkPrinter1_PrintCompletedEvent;
@@ -50,9 +60,9 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter2.ReportFromPrinterEvent += M_kgkPrinter2_ReportFromPrinterEvent;
             m_kgkPrinter3.ReportFromPrinterEvent += M_kgkPrinter3_ReportFromPrinterEvent;
 
-            m_kgkPrinter1.PrinterStatusChangeEvent += M_kgkPrinter1_PrinterStatusChangeEvent;
-            m_kgkPrinter2.PrinterStatusChangeEvent += M_kgkPrinter2_PrinterStatusChangeEvent;
-            m_kgkPrinter3.PrinterStatusChangeEvent += M_kgkPrinter3_PrinterStatusChangeEvent;
+            //m_kgkPrinter1.PrinterStatusChangeEvent += M_kgkPrinter1_PrinterStatusChangeEvent;
+            //m_kgkPrinter2.PrinterStatusChangeEvent += M_kgkPrinter2_PrinterStatusChangeEvent;
+            //m_kgkPrinter3.PrinterStatusChangeEvent += M_kgkPrinter3_PrinterStatusChangeEvent;
 
             m_kgkPrinter1.IsVisibleStackShiftProduction = true;
             m_kgkPrinter2.IsVisibleStackShiftProduction = true;
@@ -62,26 +72,57 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter2.UseAutoMode = true;
             m_kgkPrinter3.UseAutoMode = true;
         }
+        public void StartTimerSendData()
+        {
+            m_timSendData.Start();
+        }
+        public void StopTimerSendData()
+        {
+            m_timSendData.Stop();
+        }
 
+        private void M_timSendData_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            MainWindowViewModel.Instance.MainView.Dispatcher.Invoke(new Action(() =>
+            {
+                m_arrDataSend[0] = (int)m_kgkPrinter1.PrinterStatus + 1;
+                m_arrDataSend[1] = (int)m_kgkPrinter2.PrinterStatus + 1;
+                m_arrDataSend[2] = (int)m_kgkPrinter3.PrinterStatus + 1;
+
+                MainWindowViewModel.Instance.SendPrinterStatus("01", m_arrDataSend);
+            }));
+        }
         private void M_kgkPrinter1_PrinterStatusChangeEvent(enPrinterStatus printerStatus)
         {
             MainWindowViewModel.Instance.MainView.Dispatcher.Invoke(new Action(() =>
             {
-                MainWindowViewModel.Instance.SendPrinterStatus("01", (int)printerStatus);
+                m_arrDataSend[0] = (int)m_kgkPrinter1.PrinterStatus;
+                m_arrDataSend[1] = (int)m_kgkPrinter2.PrinterStatus;
+                m_arrDataSend[2] = (int)m_kgkPrinter3.PrinterStatus;
+
+                MainWindowViewModel.Instance.SendPrinterStatus("01", m_arrDataSend);
             }));
         }
         private void M_kgkPrinter2_PrinterStatusChangeEvent(enPrinterStatus printerStatus)
         {
             MainWindowViewModel.Instance.MainView.Dispatcher.Invoke(new Action(() =>
             {
-                MainWindowViewModel.Instance.SendPrinterStatus("02", (int)printerStatus);
+                m_arrDataSend[0] = (int)m_kgkPrinter1.PrinterStatus;
+                m_arrDataSend[1] = (int)m_kgkPrinter2.PrinterStatus;
+                m_arrDataSend[2] = (int)m_kgkPrinter3.PrinterStatus;
+
+                MainWindowViewModel.Instance.SendPrinterStatus("02", m_arrDataSend);
             }));
         }
         private void M_kgkPrinter3_PrinterStatusChangeEvent(enPrinterStatus printerStatus)
         {
             MainWindowViewModel.Instance.MainView.Dispatcher.Invoke(new Action(() =>
             {
-                MainWindowViewModel.Instance.SendPrinterStatus("03", (int)printerStatus);
+                m_arrDataSend[0] = (int)m_kgkPrinter1.PrinterStatus;
+                m_arrDataSend[1] = (int)m_kgkPrinter2.PrinterStatus;
+                m_arrDataSend[2] = (int)m_kgkPrinter3.PrinterStatus;
+
+                MainWindowViewModel.Instance.SendPrinterStatus("03", m_arrDataSend);
             }));
         }
 

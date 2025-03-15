@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -63,12 +64,27 @@ namespace PSS_HVCement.ViewModels
 
             m_socket = new NClientSocket(SettingsVM.SysModel.IP, SettingsVM.SysModel.Port);
             m_socket.ConnectionEventCallback += M_socket_ConnectionEventCallback;
+            m_socket.ClientErrorEventCallback += M_socket_ClientErrorEventCallback;
 
             m_socket.ClientConnect();
 
             arrPrintCountYes = new int[SettingsVM.NumberOfPrinter];
             CreateDailyResult();
             LoadDailyResultYes();
+        }
+
+        private void M_socket_ClientErrorEventCallback(string errorMsg)
+        {
+            //MessageBox.Show(errorMsg);
+
+            //MainView.Dispatcher.Invoke(new Action(() =>
+            //{
+            //    while (!m_socket.IsConnected)
+            //    {
+            //        m_socket.ClientConnect();
+            //        Thread.Sleep(1000);
+            //    }
+            //}));
         }
 
         private void M_socket_ConnectionEventCallback(NClientSocket.EConnectionEventClient e, object obj)
@@ -129,13 +145,38 @@ namespace PSS_HVCement.ViewModels
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTCONNECTED:
                     IsConnectedServer = true;
+
+                    PrintersVM.StartTimerSendData();
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTDISCONNECTED:
                     IsConnectedServer = false;
+
+                    PrintersVM.StopTimerSendData();
+
+                    //MainView.Dispatcher.Invoke(new Action(() =>
+                    //{
+                    //    while (!m_socket.IsConnected)
+                    //    {
+                    //        m_socket.ClientConnect();
+                    //        Thread.Sleep(1000);
+                    //    }
+                    //}));
                     break;
                 default:
                     break;
             }
+        }
+
+        public void ReconnectServer()
+        {
+            if (m_socket == null)
+                return;
+
+            MainView.Dispatcher.Invoke(new Action(() =>
+            {
+                if (!m_socket.IsConnected)
+                    m_socket.ClientConnect();
+            }));
         }
 
         #region ViewModels
@@ -238,7 +279,7 @@ namespace PSS_HVCement.ViewModels
             }
         }
 
-        public void SendPrinterStatus(string printer, int status)
+        public void SendPrinterStatus(string printer, int[] status)
         {
             if (m_socket == null)
                 return;
@@ -246,7 +287,15 @@ namespace PSS_HVCement.ViewModels
             if (!m_socket.IsConnected)
                 return;
 
-            string cmd = "*100@!?" + printer + "|" + status + "#";
+            string st = string.Empty;
+            for (int i = 0; i < status.Length; i++)
+            {
+                st += status[i].ToString() + "|";
+            }
+
+            string s = st.Substring(0, st.Length - 1);
+
+            string cmd = "*100@!?" + s + "#";
 
             // show send data
             MainView.Dispatcher.Invoke(new Action(() =>
