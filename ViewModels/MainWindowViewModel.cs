@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -28,6 +29,9 @@ namespace PSS_HVCement.ViewModels
         private NClientSocket m_socket;
 
         private bool m_bConnectedServer = false;
+        private System.Timers.Timer m_timReconnectServer = new System.Timers.Timer();
+        private System.Timers.Timer m_timCheckShiftNow = new System.Timers.Timer();
+        private int m_nShiftNow = -1;
 
         int[] arrPrintCountYes;
 
@@ -71,20 +75,33 @@ namespace PSS_HVCement.ViewModels
             arrPrintCountYes = new int[SettingsVM.NumberOfPrinter];
             CreateDailyResult();
             LoadDailyResultYes();
+
+            m_timReconnectServer.Interval = 6000;
+            m_timReconnectServer.Elapsed += M_timReconnectServer_Elapsed;
+
+            m_timCheckShiftNow.Interval = 10000;
+            m_timCheckShiftNow.Elapsed += M_timCheckShiftNow_Elapsed;
+            m_timCheckShiftNow.Start();
+
+            ShiftNow = CheckManufactureShift();
+        }
+
+        private void M_timCheckShiftNow_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if(ShiftNow != CheckManufactureShift())
+            {
+                ShiftNow = CheckManufactureShift();
+            }
+        }
+
+        private void M_timReconnectServer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            ReconnectServer();
         }
 
         private void M_socket_ClientErrorEventCallback(string errorMsg)
         {
-            //MessageBox.Show(errorMsg);
 
-            //MainView.Dispatcher.Invoke(new Action(() =>
-            //{
-            //    while (!m_socket.IsConnected)
-            //    {
-            //        m_socket.ClientConnect();
-            //        Thread.Sleep(1000);
-            //    }
-            //}));
         }
 
         private void M_socket_ConnectionEventCallback(NClientSocket.EConnectionEventClient e, object obj)
@@ -106,61 +123,59 @@ namespace PSS_HVCement.ViewModels
                     if (m_socket.ReceiveString.Length < 6)
                         return;
 
-                    int length = m_socket.ReceiveString.Length;
-                    int idx_1 = m_socket.ReceiveString.IndexOf('?');
-                    int idx_2 = m_socket.ReceiveString.IndexOf('|');
-
-                    if (idx_1 < 0 || idx_2 < 0) return;
-
-                    string printer = m_socket.ReceiveString.Substring(idx_1 + 1, 2);
-                    if (printer == null) return;
-
-                    string content = m_socket.ReceiveString.Substring(idx_2 + 1, length - 10);
-                    if (content == null) return;
-
-                    switch (printer)
+                    if (m_socket.ReceiveString.StartsWith("*11@!?"))
                     {
-                        case "01":
-                            PrintersVM.KGKJetPrinter1.Dispatcher.Invoke(new Action(() =>
-                            {
-                                PrintersVM.KGKJetPrinter1.MessageContent = content;
-                                PrintersVM.KGKJetPrinter1.PerformPushMessage();
-                            }));
-                            break;
-                        case "02":
-                            PrintersVM.KGKJetPrinter2.Dispatcher.Invoke(new Action(() =>
-                            {
-                                PrintersVM.KGKJetPrinter2.MessageContent = content;
-                                PrintersVM.KGKJetPrinter2.PerformPushMessage();
-                            }));
-                            break;
-                        case "03":
-                            PrintersVM.KGKJetPrinter3.Dispatcher.Invoke(new Action(() =>
-                            {
-                                PrintersVM.KGKJetPrinter3.MessageContent = content;
-                                PrintersVM.KGKJetPrinter3.PerformPushMessage();
-                            }));
-                            break;
+
+                        int length = m_socket.ReceiveString.Length;
+                        int idx_1 = m_socket.ReceiveString.IndexOf('?');
+                        int idx_2 = m_socket.ReceiveString.IndexOf('|');
+
+                        if (idx_1 < 0 || idx_2 < 0) return;
+
+                        string printer = m_socket.ReceiveString.Substring(idx_1 + 1, 2);
+                        if (printer == null) return;
+
+                        string content = m_socket.ReceiveString.Substring(idx_2 + 1, length - 10);
+                        if (content == null) return;
+
+                        switch (printer)
+                        {
+                            case "01":
+                                PrintersVM.KGKJetPrinter1.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    PrintersVM.KGKJetPrinter1.MessageContent = content;
+                                    PrintersVM.KGKJetPrinter1.PerformPushMessage();
+                                }));
+                                break;
+                            case "02":
+                                PrintersVM.KGKJetPrinter2.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    PrintersVM.KGKJetPrinter2.MessageContent = content;
+                                    PrintersVM.KGKJetPrinter2.PerformPushMessage();
+                                }));
+                                break;
+                            case "03":
+                                PrintersVM.KGKJetPrinter3.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    PrintersVM.KGKJetPrinter3.MessageContent = content;
+                                    PrintersVM.KGKJetPrinter3.PerformPushMessage();
+                                }));
+                                break;
+                        }
                     }
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTCONNECTED:
                     IsConnectedServer = true;
 
+                    m_timReconnectServer.Stop();
                     PrintersVM.StartTimerSendData();
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTDISCONNECTED:
                     IsConnectedServer = false;
 
                     PrintersVM.StopTimerSendData();
+                    m_timReconnectServer.Start();
 
-                    //MainView.Dispatcher.Invoke(new Action(() =>
-                    //{
-                    //    while (!m_socket.IsConnected)
-                    //    {
-                    //        m_socket.ClientConnect();
-                    //        Thread.Sleep(1000);
-                    //    }
-                    //}));
                     break;
                 default:
                     break;
@@ -172,11 +187,8 @@ namespace PSS_HVCement.ViewModels
             if (m_socket == null)
                 return;
 
-            MainView.Dispatcher.Invoke(new Action(() =>
-            {
-                if (!m_socket.IsConnected)
-                    m_socket.ClientConnect();
-            }));
+            if (!m_socket.IsConnected)
+                m_socket.ClientConnect();
         }
 
         #region ViewModels
@@ -190,16 +202,20 @@ namespace PSS_HVCement.ViewModels
             {
                 if (SetProperty(ref m_bConnectedServer, value))
                 {
-                    if (m_bConnectedServer)
-                    {
-                        MainView.labelStatusServer.Content = "Đã kết nối Server";
-                        MainView.labelStatusServer.Foreground = Brushes.Green;
-                    }
-                    else
-                    {
-                        MainView.labelStatusServer.Content = "Chưa kết nối Server";
-                        MainView.labelStatusServer.Foreground = Brushes.Red;
-                    }
+
+                }
+            }
+        }
+        public int ShiftNow
+        {
+            get => m_nShiftNow;
+            set
+            {
+               if(SetProperty(ref m_nShiftNow, value))
+                {
+                    PrintersVM.KGKJetPrinter1.ShiftNow = m_nShiftNow;
+                    PrintersVM.KGKJetPrinter2.ShiftNow = m_nShiftNow;
+                    PrintersVM.KGKJetPrinter3.ShiftNow = m_nShiftNow;
                 }
             }
         }
@@ -276,6 +292,28 @@ namespace PSS_HVCement.ViewModels
                 {
                     arrPrintCountYes[i] = Convert.ToInt32(rd.ReadLine());
                 }
+            }
+        }
+        private int CheckManufactureShift()
+        {
+            int hourNow = DateTime.Now.Hour;
+            int dayNow = DateTime.Now.Day;
+
+            if (hourNow >= 6 && hourNow < 14)
+            {
+                return 0; // Shift 1
+            }
+            else if (hourNow >= 14 && hourNow < 22)
+            {
+                return 1; // shitf 2
+            }
+            else if ((hourNow >= 22 && hourNow < 24) || (hourNow >= 0 && hourNow < 6))
+            {
+                return 2; // shift 3
+            }
+            else
+            {
+                return -1;
             }
         }
 

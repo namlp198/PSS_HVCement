@@ -20,13 +20,13 @@ namespace Ndev.NNetSocket
             CLIENTDISCONNECTED
         }
 
-        System.Timers.Timer m_timReconnect = new System.Timers.Timer();
+        //System.Timers.Timer m_timReconnect = new System.Timers.Timer();
         #endregion
 
         #region Constructor
         public NClientSocket()
         {
-            m_timReconnect.Interval = 8000;
+            //m_timReconnect.Interval = 8000;
         }
         public NClientSocket(string ipaddress, int port)
         {
@@ -38,15 +38,16 @@ namespace Ndev.NNetSocket
             }
             this.IpAddress = ipaddress;
             this.Port = port;
-            m_timReconnect.Start();
-            m_timReconnect.Elapsed += M_timReconnect_Elapsed;
+
+            //m_timReconnect.Start();
+            //m_timReconnect.Elapsed += M_timReconnect_Elapsed;
         }
 
-        private void M_timReconnect_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (!m_clientSocket.Connected)
-                ClientConnect();
-        }
+        //private void M_timReconnect_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    if (!m_clientSocket.Connected)
+        //        ClientConnect();
+        //}
         #endregion
 
         #region Variable

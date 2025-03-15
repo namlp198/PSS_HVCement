@@ -107,6 +107,7 @@
     <Compile Include="Common\Defines.cs" />
     <Compile Include="Common\Encryption.cs" />
     <Compile Include="Common\XmlManagement.cs" />
+    <Compile Include="Converter\BooleanToStringConverter.cs" />
     <Compile Include="Manager\Csv_Manager.cs" />
     <Compile Include="Manager\ExcelParser.cs" />
     <Compile Include="Manager\Excel_Manager.cs" />
@@ -244,6 +245,8 @@
     <Resource Include="Resources\Images\account.png" />
     <Resource Include="Resources\Images\lock.png" />
     <Resource Include="Resources\Images\logout.png" />
+    <Resource Include="Resources\Images\reconnect.png" />
+    <Resource Include="Resources\Images\reconnect_2.png" />
     <Content Include="Software Protector.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
