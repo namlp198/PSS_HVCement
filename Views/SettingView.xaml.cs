@@ -49,5 +49,10 @@ namespace PSS_HVCement.Views
         {
 
         }
+
+        private void btnSaveSysSetting_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel.Instance.SettingsVM.SaveSysSettings();
+        }
     }
 }

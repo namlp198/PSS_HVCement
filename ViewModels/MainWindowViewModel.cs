@@ -1,7 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
 using MVVMBasic;
 using Ndev.NNetSocket;
-using PSS_12Printer.ViewModels;
+using PSS_HVCement.ViewModels;
 using PSS_HVCement.Commands.Cmd;
 using PSS_HVCement.Common;
 using PSS_HVCement.Manager;
@@ -70,7 +70,8 @@ namespace PSS_HVCement.ViewModels
             m_socket.ConnectionEventCallback += M_socket_ConnectionEventCallback;
             m_socket.ClientErrorEventCallback += M_socket_ClientErrorEventCallback;
 
-            m_socket.ClientConnect();
+            if (SettingsVM.SysModel.UseAutoMode)
+                m_socket.ClientConnect();
 
             arrPrintCountYes = new int[SettingsVM.NumberOfPrinter];
             CreateDailyResult();
@@ -88,7 +89,7 @@ namespace PSS_HVCement.ViewModels
 
         private void M_timCheckShiftNow_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if(ShiftNow != CheckManufactureShift())
+            if (ShiftNow != CheckManufactureShift())
             {
                 ShiftNow = CheckManufactureShift();
             }
@@ -114,11 +115,14 @@ namespace PSS_HVCement.ViewModels
                     if (m_socket.ReceiveString == null)
                         return;
 
-                    // show receive data
-                    MainView.Dispatcher.Invoke(new Action(() =>
+                    if (SettingsVM.SysModel.IsShowData)
                     {
-                        MainView.labelReceiveData.Content = m_socket.ReceiveString;
-                    }));
+                        // show receive data
+                        MainView.Dispatcher.Invoke(new Action(() =>
+                        {
+                            MainView.labelReceiveData.Content = m_socket.ReceiveString;
+                        }));
+                    }
 
                     if (m_socket.ReceiveString.Length < 6)
                         return;
@@ -211,7 +215,7 @@ namespace PSS_HVCement.ViewModels
             get => m_nShiftNow;
             set
             {
-               if(SetProperty(ref m_nShiftNow, value))
+                if (SetProperty(ref m_nShiftNow, value))
                 {
                     PrintersVM.KGKJetPrinter1.ShiftNow = m_nShiftNow;
                     PrintersVM.KGKJetPrinter2.ShiftNow = m_nShiftNow;
@@ -335,11 +339,14 @@ namespace PSS_HVCement.ViewModels
 
             string cmd = "*100@!?" + s + "#";
 
-            // show send data
-            MainView.Dispatcher.Invoke(new Action(() =>
+            if (SettingsVM.SysModel.IsShowData)
             {
-                MainView.labelSendData.Content = cmd;
-            }));
+                // show send data
+                MainView.Dispatcher.Invoke(new Action(() =>
+                {
+                    MainView.labelSendData.Content = cmd;
+                }));
+            }
 
             m_socket.SendMsg(cmd);
         }

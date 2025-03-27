@@ -4,11 +4,44 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PSS_HVCement.Views"
+        xmlns:vm="clr-namespace:PSS_HVCement.ViewModels"
+        d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
         mc:Ignorable="d"
         Title="SettingView" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <TabControl Margin="3">
+            <TabItem Header="Hệ thống"
+                     FontWeight="SemiBold">
+                <Grid>
+                    <CheckBox VerticalAlignment="Top"
+                              HorizontalAlignment="Left"
+                              Margin="10 10 0 0"
+                              Content="Use Auto Mode"
+                              FontSize="16"
+                              VerticalContentAlignment="Center"
+                              IsChecked="{Binding SysModel.UseAutoMode, Mode=TwoWay}"/>
+                    <CheckBox VerticalAlignment="Top"
+                              HorizontalAlignment="Left"
+                              Margin="10 50 0 0"
+                              Content="Is Show Data"
+                              FontSize="16"
+                              VerticalContentAlignment="Center" 
+                              IsChecked="{Binding SysModel.IsShowData, Mode=TwoWay}"/>
+                    <Button VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Margin="10 100 0 0"
+                            Width="100"
+                            Height="35"
+                            FontWeight="SemiBold"
+                            FontSize="16"
+                            Content="Save"
+                            Name="btnSaveSysSetting"
+                            Click="btnSaveSysSetting_Click">
+                        
+                    </Button>
+                </Grid>
+            </TabItem>
             <TabItem Header="Máy in 1"
                      FontWeight="SemiBold">
                 <Grid>

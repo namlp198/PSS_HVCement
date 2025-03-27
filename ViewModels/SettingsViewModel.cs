@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 using System.Xml;
 
-namespace PSS_12Printer.ViewModels
+namespace PSS_HVCement.ViewModels
 {
     public class SettingsViewModel : ViewModelBase
     {
@@ -20,9 +21,18 @@ namespace PSS_12Printer.ViewModels
         private SystemModel m_sysModel = new SystemModel();
         private XmlManagement m_xmlManagement = new XmlManagement();
 
-        public SettingView PrinterView { get { return m_settingView; } set { m_settingView = value; } }
+        public SettingView SettingView { get { return m_settingView; } set { m_settingView = value; } }
         public List<PrinterModel> PrinterModels { get => m_printerModels; set { m_printerModels = value; } }
-        public SystemModel SysModel { get => m_sysModel; set {  m_sysModel = value; } }
+        public SystemModel SysModel
+        {
+            get => m_sysModel; set
+            {
+                if (SetProperty(ref m_sysModel, value))
+                {
+
+                }
+            }
+        }
         public SettingsViewModel(Dispatcher dispatcher, SettingView settingView)
         {
             m_dispatcher = dispatcher;
@@ -125,8 +135,30 @@ namespace PSS_12Printer.ViewModels
                 SystemModel sysModel = new SystemModel();
                 sysModel.IP = m_xmlManagement.GetAttributeValueFromNode(nodeServer, "IP");
                 sysModel.Port = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodeServer, "Port"));
+                sysModel.UseAutoMode = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodeServer, "UseAutoMode"), "true") == 0 ? true : false;
+                sysModel.IsShowData = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodeServer, "IsShowData"), "true") == 0 ? true : false;
 
                 m_sysModel = sysModel;
+            }
+        }
+        public void SaveSysSettings()
+        {
+            string settingsPath = Defines.STARTUP_PROG_PATH + "\\Settings.config";
+
+            m_xmlManagement.Load(settingsPath);
+
+            // System setting
+            XmlNode nodeServer = m_xmlManagement.SelectSingleNode("//Configurations//Systems//Server");
+
+            if (nodeServer != null)
+            {
+                m_xmlManagement.SetAttributeValueFromXPath("//Configurations//Systems//Server", "UseAutoMode", SysModel.UseAutoMode.ToString().ToLower());
+                m_xmlManagement.SetAttributeValueFromXPath("//Configurations//Systems//Server", "IsShowData", SysModel.IsShowData.ToString().ToLower());
+            }
+
+            if(m_xmlManagement.Save(settingsPath))
+            {
+                MessageBox.Show("Save success");
             }
         }
     }

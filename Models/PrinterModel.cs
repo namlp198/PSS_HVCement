@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
+using MVVMBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PSS_HVCement.Models
 {
-    public class PrinterModel
+    public class PrinterModel : ModelBase
     {
         public int Id { get; set; }
         public string IpPrinter { get; set; }

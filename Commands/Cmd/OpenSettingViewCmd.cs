@@ -1,4 +1,5 @@
-﻿using PSS_HVCement.Views;
+﻿using PSS_HVCement.ViewModels;
+using PSS_HVCement.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,9 @@ namespace PSS_HVCement.Commands.Cmd
         public OpenSettingViewCmd() { }
         public override void Execute(object parameter)
         {
-            SettingView settingView = new SettingView();
-            settingView.ShowDialog();
+            //SettingView settingView = new SettingView();
+            //settingView.ShowDialog();
+            MainWindowViewModel.Instance.SettingsVM.SettingView.ShowDialog();
         }
     }
 }

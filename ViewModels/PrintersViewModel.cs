@@ -67,10 +67,6 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter1.IsVisibleStackShiftProduction = true;
             m_kgkPrinter2.IsVisibleStackShiftProduction = true;
             m_kgkPrinter3.IsVisibleStackShiftProduction = true;
-
-            m_kgkPrinter1.UseAutoMode = true;
-            m_kgkPrinter2.UseAutoMode = true;
-            m_kgkPrinter3.UseAutoMode = true;
         }
         public void StartTimerSendData()
         {

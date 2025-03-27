@@ -1,4 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
+using MVVMBasic;
+using PSS_HVCement.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +9,38 @@ using System.Threading.Tasks;
 
 namespace PSS_HVCement.Models
 {
-    public class SystemModel
+    public class SystemModel : ModelBase
     {
+        private string _ip;
+        private string _port;
+        private bool _useAutoMode;
+        private bool _isShowData;
         public string IP {  get; set; }
         public int Port { get; set; }
+        public bool UseAutoMode
+        {
+            get => _useAutoMode;
+            set
+            {
+                if(SetProperty(ref _useAutoMode, value))
+                {
+
+                }
+            }
+        }
+        public bool IsShowData
+        {
+            get => _isShowData;
+            set
+            {
+                if(SetProperty(ref _isShowData, value))
+                {
+                    MainWindowViewModel.Instance.MainView.Dispatcher.Invoke(new Action(() =>
+                    {
+                        MainWindowViewModel.Instance.MainView.labelSendData.Content = null;
+                    }));
+                }
+            }
+        }
     }
 }

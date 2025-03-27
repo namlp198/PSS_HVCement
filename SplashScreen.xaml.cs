@@ -1,8 +1,7 @@
 ﻿using JetPrinter.ui;
-using PSS_12Printer.ViewModels;
+using PSS_HVCement.ViewModels;
 using PSS_HVCement.Common;
 using PSS_HVCement.Properties;
-using PSS_HVCement.ViewModels;
 using PSS_HVCement.Views;
 using System;
 using System.Collections.Generic;
@@ -69,20 +68,22 @@ namespace PSS_HVCement
                 if (CheckRemainingMaintenancePeriod())
                 {
                     PrintersViewModel printerVM = new PrintersViewModel(printersView.Dispatcher, printersView);
+                    bool mode = settingsVM.SysModel.UseAutoMode;
+
                     printerVM.KGKJetPrinter1 = new KGKJetPrinterView(settingsVM.PrinterModels[0].IpPrinter, settingsVM.PrinterModels[0].Id);
                     printerVM.KGKJetPrinter1.SetParamsDefault(settingsVM.PrinterModels[0].TextModule, settingsVM.PrinterModels[0].UseTimerCheckPrintState,
                                                               settingsVM.PrinterModels[0].UseTimerCheckPrintCount, settingsVM.PrinterModels[0].CheckPrintStateDelay,
-                                                              settingsVM.PrinterModels[0].CheckPrintCountDelay, settingsVM.PrinterModels[0].IsResetPrintCount);
+                                                              settingsVM.PrinterModels[0].CheckPrintCountDelay, settingsVM.PrinterModels[0].IsResetPrintCount, mode);
 
                     printerVM.KGKJetPrinter2 = new KGKJetPrinterView(settingsVM.PrinterModels[1].IpPrinter, settingsVM.PrinterModels[1].Id);
                     printerVM.KGKJetPrinter2.SetParamsDefault(settingsVM.PrinterModels[1].TextModule, settingsVM.PrinterModels[1].UseTimerCheckPrintState,
                                                               settingsVM.PrinterModels[1].UseTimerCheckPrintCount, settingsVM.PrinterModels[1].CheckPrintStateDelay,
-                                                              settingsVM.PrinterModels[1].CheckPrintCountDelay, settingsVM.PrinterModels[1].IsResetPrintCount);
+                                                              settingsVM.PrinterModels[1].CheckPrintCountDelay, settingsVM.PrinterModels[1].IsResetPrintCount, mode);
 
                     printerVM.KGKJetPrinter3 = new KGKJetPrinterView(settingsVM.PrinterModels[2].IpPrinter, settingsVM.PrinterModels[2].Id);
                     printerVM.KGKJetPrinter3.SetParamsDefault(settingsVM.PrinterModels[2].TextModule, settingsVM.PrinterModels[2].UseTimerCheckPrintState,
                                                               settingsVM.PrinterModels[2].UseTimerCheckPrintCount, settingsVM.PrinterModels[2].CheckPrintStateDelay,
-                                                              settingsVM.PrinterModels[2].CheckPrintCountDelay, settingsVM.PrinterModels[2].IsResetPrintCount);
+                                                              settingsVM.PrinterModels[2].CheckPrintCountDelay, settingsVM.PrinterModels[2].IsResetPrintCount, mode);
 
                     printersView.contentPrinter1.Content = printerVM.KGKJetPrinter1;
                     printersView.contentPrinter2.Content = printerVM.KGKJetPrinter2;
