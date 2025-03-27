@@ -55,7 +55,7 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter3.IsVisibleStackShiftProduction = false;
         }
 
-        private void kgkPrinter1_PrintCountIncreaseEvent(uint nPrintCount)
+        private void kgkPrinter1_PrintCountIncreaseEvent(uint nPrintCount,string content)
         {
             // record to database
             List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
@@ -65,13 +65,13 @@ namespace PSS_HVCement.ViewModels
             excelModel.PEndTime = DateTime.Now.ToString("HH:mm:ss");
             excelModel.PShift = "";
             excelModel.DeliveryCode = "";
-            excelModel.PrintCode = m_sPrintCode;
+            excelModel.PrintCode = "NSX:" + content;
             excelModel.PrintCount = (int)nPrintCount;
 
             excelProductionDataModels.Add(excelModel);
             Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 1);
         }
-        private void kgkPrinter2_PrintCountIncreaseEvent(uint nPrintCount)
+        private void kgkPrinter2_PrintCountIncreaseEvent(uint nPrintCount, string content)
         {
             // record to database
             List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
@@ -81,23 +81,24 @@ namespace PSS_HVCement.ViewModels
             excelModel.PEndTime = DateTime.Now.ToString("HH:mm:ss");
             excelModel.PShift = "";
             excelModel.DeliveryCode = "";
-            excelModel.PrintCode = m_sPrintCode;
+            excelModel.PrintCode = "NSX:" + content;
             excelModel.PrintCount = (int)nPrintCount;
 
             excelProductionDataModels.Add(excelModel);
             Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 2);
         }
-        private void kgkPrinter3_PrintCountIncreaseEvent(uint nPrintCount)
+        private void kgkPrinter3_PrintCountIncreaseEvent(uint nPrintCount, string content)
         {
             // record to database
             List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
             ExcelProductionDataModel excelModel = new ExcelProductionDataModel();
             excelModel.PDate = m_sDate;
             excelModel.PStartTime = "";
-            excelModel.PEndTime = DateTime.Now.ToString("HH:mm:ss");
+            //excelModel.PEndTime = DateTime.Now.ToString("HH:mm:ss");
+            excelModel.PEndTime = content;
             excelModel.PShift = "";
             excelModel.DeliveryCode = "";
-            excelModel.PrintCode = m_sPrintCode;
+            excelModel.PrintCode = "NSX:" + content;
             excelModel.PrintCount = (int)nPrintCount;
 
             excelProductionDataModels.Add(excelModel);
@@ -156,7 +157,7 @@ namespace PSS_HVCement.ViewModels
             excelModel.PEndTime = data[2];
             excelModel.PShift = data[3];
             excelModel.DeliveryCode = data[4];
-            excelModel.PrintCode = data[5];
+            excelModel.PrintCode = "NSX:" + data[5];
             excelModel.PrintCount = int.Parse(data[6]);
 
             excelProductionDataModels.Add(excelModel);
@@ -173,7 +174,7 @@ namespace PSS_HVCement.ViewModels
             excelModel.PEndTime = data[2];
             excelModel.PShift = data[3];
             excelModel.DeliveryCode = data[4];
-            excelModel.PrintCode = data[5];
+            excelModel.PrintCode = "NSX:" + data[5];
             excelModel.PrintCount = int.Parse(data[6]);
 
             excelProductionDataModels.Add(excelModel);
@@ -190,7 +191,7 @@ namespace PSS_HVCement.ViewModels
             excelModel.PEndTime = data[2];
             excelModel.PShift = data[3];
             excelModel.DeliveryCode = data[4];
-            excelModel.PrintCode = data[5];
+            excelModel.PrintCode = "NSX:" + data[5];
             excelModel.PrintCount = int.Parse(data[6]);
 
             excelProductionDataModels.Add(excelModel);
