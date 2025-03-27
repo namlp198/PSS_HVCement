@@ -14,6 +14,7 @@
     <Window.Resources>
         <cvt:BooleanToServerStatusConverter x:Key="BooleanToServerStatusConverter"/>
         <cvt:BooleanToForegroundConverter x:Key="BooleanToForegroundConverter"/>
+        <cvt:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -29,7 +30,8 @@
                    Foreground="{Binding IsConnectedServer, Converter={StaticResource BooleanToForegroundConverter}}"
                    FontWeight="SemiBold"
                    FontSize="14"
-                   Name="labelStatusServer" />
+                   Name="labelStatusServer"
+                   Visibility="{Binding SettingsVM.SysModel.UseAutoMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <Label VerticalAlignment="Top"
                    HorizontalAlignment="Left"
                    Margin="5 2 5 2"
@@ -140,7 +142,8 @@
                 Content="Reconnect"
                 FontSize="12"
                 Name="btnReconnet"
-                Click="btnReconnet_Click">
+                Click="btnReconnet_Click"
+                Visibility="{Binding SettingsVM.SysModel.UseAutoMode, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Button.Template>
                 <ControlTemplate>
                     <Grid>

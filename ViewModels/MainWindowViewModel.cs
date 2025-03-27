@@ -178,7 +178,11 @@ namespace PSS_HVCement.ViewModels
                     IsConnectedServer = false;
 
                     PrintersVM.StopTimerSendData();
-                    m_timReconnectServer.Start();
+
+                    if (SettingsVM.SysModel.UseAutoMode)
+                    {
+                        m_timReconnectServer.Start();
+                    }
 
                     break;
                 default:
@@ -191,8 +195,22 @@ namespace PSS_HVCement.ViewModels
             if (m_socket == null)
                 return;
 
+            if (m_socket.ClientSocket == null)
+            {
+                m_socket.ClientConnect();
+                return;
+            }
+
             if (!m_socket.IsConnected)
                 m_socket.ClientConnect();
+        }
+        public void DisconnectServer()
+        {
+            if (m_socket == null)
+                return;
+
+            if (m_socket.IsConnected)
+                m_socket.ClientDisconnect();
         }
 
         #region ViewModels

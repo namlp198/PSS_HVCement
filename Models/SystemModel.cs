@@ -24,7 +24,14 @@ namespace PSS_HVCement.Models
             {
                 if(SetProperty(ref _useAutoMode, value))
                 {
-
+                    if(_useAutoMode)
+                    {
+                        MainWindowViewModel.Instance.ReconnectServer();
+                    }
+                    else
+                    {
+                        MainWindowViewModel.Instance.DisconnectServer();
+                    }
                 }
             }
         }
