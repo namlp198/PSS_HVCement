@@ -62,6 +62,7 @@ namespace PSS_HVCement.ViewModels
 
             // Printer 01
             XmlNode nodePrinter01 = m_xmlManagement.SelectSingleNode("//Configurations//Printer01");
+            List<PrinterModel> printers = new List<PrinterModel>();
             if(nodePrinter01 != null)
             {
                 PrinterModel model1 = new PrinterModel();
@@ -76,7 +77,7 @@ namespace PSS_HVCement.ViewModels
                 model1.CheckPrintCountDelay = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "CheckPrintCountDelay"));
                 model1.IsResetPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter01, "IsResetPrintCount"), "true") == 0 ? true : false;
 
-                m_printerModels.Add(model1);
+                printers.Add(model1);
             }
 
             // Printer 02
@@ -95,7 +96,7 @@ namespace PSS_HVCement.ViewModels
                 model2.CheckPrintCountDelay = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter02, "CheckPrintCountDelay"));
                 model2.IsResetPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter02, "IsResetPrintCount"), "true") == 0 ? true : false;
 
-                m_printerModels.Add(model2);
+                printers.Add(model2);
             }
 
             // Printer 03
@@ -114,9 +115,10 @@ namespace PSS_HVCement.ViewModels
                 model3.CheckPrintCountDelay = int.Parse(m_xmlManagement.GetAttributeValueFromNode(nodePrinter03, "CheckPrintCountDelay"));
                 model3.IsResetPrintCount = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodePrinter03, "IsResetPrintCount"), "true") == 0 ? true : false;
 
-                m_printerModels.Add(model3);
+                printers.Add(model3);
             }
 
+            PrinterModels = printers;
             NumberOfPrinter = m_printerModels.Count;
 
             m_xmlManagement.Close();
@@ -138,7 +140,7 @@ namespace PSS_HVCement.ViewModels
                 sysModel.UseAutoMode = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodeServer, "UseAutoMode"), "true") == 0 ? true : false;
                 sysModel.IsShowData = string.Compare(m_xmlManagement.GetAttributeValueFromNode(nodeServer, "IsShowData"), "true") == 0 ? true : false;
 
-                m_sysModel = sysModel;
+                SysModel = sysModel;
             }
         }
         public void SaveSysSettings()

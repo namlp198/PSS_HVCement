@@ -31,7 +31,7 @@
                    FontWeight="SemiBold"
                    FontSize="14"
                    Name="labelStatusServer"
-                   Visibility="{Binding SettingsVM.SysModel.UseAutoMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                   Visibility="Hidden"/>
             <Label VerticalAlignment="Top"
                    HorizontalAlignment="Left"
                    Margin="5 2 5 2"
@@ -143,7 +143,7 @@
                 FontSize="12"
                 Name="btnReconnet"
                 Click="btnReconnet_Click"
-                Visibility="{Binding SettingsVM.SysModel.UseAutoMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                Visibility="Hidden">
             <Button.Template>
                 <ControlTemplate>
                     <Grid>

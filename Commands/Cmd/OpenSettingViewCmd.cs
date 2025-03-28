@@ -14,9 +14,18 @@ namespace PSS_HVCement.Commands.Cmd
         public OpenSettingViewCmd() { }
         public override void Execute(object parameter)
         {
-            //SettingView settingView = new SettingView();
-            //settingView.ShowDialog();
-            MainWindowViewModel.Instance.SettingsVM.SettingView.ShowDialog();
+            try
+            {
+                //MainWindowViewModel.Instance.SettingsVM.SettingView.ShowDialog();
+                SettingView settingView = new SettingView();
+                MainWindowViewModel.Instance.SettingsVM = new SettingsViewModel(settingView.Dispatcher, settingView);
+                settingView.DataContext = MainWindowViewModel.Instance.SettingsVM;
+                settingView.ShowDialog();
+            }
+            catch (Exception ex)
+            { 
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

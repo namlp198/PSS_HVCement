@@ -66,12 +66,20 @@ namespace PSS_HVCement.ViewModels
 
             LoginViewModel.LoginSystemSuccessEvent += LoginSystemEventHandle;
 
+            m_timCheckShiftNow.Interval = 10000;
+            m_timCheckShiftNow.Elapsed += M_timCheckShiftNow_Elapsed;
+            m_timCheckShiftNow.Enabled = false;
+
             m_socket = new NClientSocket(SettingsVM.SysModel.IP, SettingsVM.SysModel.Port);
             m_socket.ConnectionEventCallback += M_socket_ConnectionEventCallback;
             m_socket.ClientErrorEventCallback += M_socket_ClientErrorEventCallback;
 
             if (SettingsVM.SysModel.UseAutoMode)
+            {
                 m_socket.ClientConnect();
+                MainView.btnReconnet.Visibility = Visibility.Visible;
+                MainView.labelStatusServer.Visibility = Visibility.Visible;
+            }
 
             arrPrintCountYes = new int[SettingsVM.NumberOfPrinter];
             CreateDailyResult();
@@ -79,10 +87,6 @@ namespace PSS_HVCement.ViewModels
 
             m_timReconnectServer.Interval = 6000;
             m_timReconnectServer.Elapsed += M_timReconnectServer_Elapsed;
-
-            m_timCheckShiftNow.Interval = 10000;
-            m_timCheckShiftNow.Elapsed += M_timCheckShiftNow_Elapsed;
-            m_timCheckShiftNow.Start();
 
             ShiftNow = CheckManufactureShift();
         }
@@ -172,6 +176,7 @@ namespace PSS_HVCement.ViewModels
                     IsConnectedServer = true;
 
                     m_timReconnectServer.Stop();
+                    m_timCheckShiftNow.Start();
                     PrintersVM.StartTimerSendData();
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTDISCONNECTED:
@@ -179,11 +184,11 @@ namespace PSS_HVCement.ViewModels
 
                     PrintersVM.StopTimerSendData();
 
-                    if (SettingsVM.SysModel.UseAutoMode)
+                    if(SettingsVM.SysModel.UseAutoMode)
                     {
                         m_timReconnectServer.Start();
-                    }
-
+                    }    
+                    m_timCheckShiftNow.Stop();
                     break;
                 default:
                     break;
@@ -202,7 +207,9 @@ namespace PSS_HVCement.ViewModels
             }
 
             if (!m_socket.IsConnected)
+            {
                 m_socket.ClientConnect();
+            }
         }
         public void DisconnectServer()
         {
@@ -210,7 +217,9 @@ namespace PSS_HVCement.ViewModels
                 return;
 
             if (m_socket.IsConnected)
+            {
                 m_socket.ClientDisconnect();
+            }
         }
 
         #region ViewModels
