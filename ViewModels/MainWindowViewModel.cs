@@ -152,21 +152,21 @@ namespace PSS_HVCement.ViewModels
                                 PrintersVM.KGKJetPrinter1.Dispatcher.Invoke(new Action(() =>
                                 {
                                     PrintersVM.KGKJetPrinter1.MessageContent = content;
-                                    PrintersVM.KGKJetPrinter1.PerformPushMessage();
+                                    PrintersVM.KGKJetPrinter1.PerformPushMessageAuto();
                                 }));
                                 break;
                             case "02":
                                 PrintersVM.KGKJetPrinter2.Dispatcher.Invoke(new Action(() =>
                                 {
                                     PrintersVM.KGKJetPrinter2.MessageContent = content;
-                                    PrintersVM.KGKJetPrinter2.PerformPushMessage();
+                                    PrintersVM.KGKJetPrinter2.PerformPushMessageAuto();
                                 }));
                                 break;
                             case "03":
                                 PrintersVM.KGKJetPrinter3.Dispatcher.Invoke(new Action(() =>
                                 {
                                     PrintersVM.KGKJetPrinter3.MessageContent = content;
-                                    PrintersVM.KGKJetPrinter3.PerformPushMessage();
+                                    PrintersVM.KGKJetPrinter3.PerformPushMessageAuto();
                                 }));
                                 break;
                         }
