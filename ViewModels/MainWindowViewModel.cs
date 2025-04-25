@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Reflection;
 
 namespace PSS_HVCement.ViewModels
 {
@@ -34,6 +35,9 @@ namespace PSS_HVCement.ViewModels
         private int m_nShiftNow = -1;
 
         int[] arrPrintCountYes;
+
+        private string m_strAppVersion = string.Empty;
+        private string m_strAppName = string.Empty;
 
         #region Singleton
         private static MainWindowViewModel m_instance;
@@ -89,6 +93,8 @@ namespace PSS_HVCement.ViewModels
             m_timReconnectServer.Elapsed += M_timReconnectServer_Elapsed;
 
             ShiftNow = CheckManufactureShift();
+
+            GetAppInfo();
         }
 
         private void M_timCheckShiftNow_Elapsed(object sender, ElapsedEventArgs e)
@@ -226,32 +232,9 @@ namespace PSS_HVCement.ViewModels
         public PrintersViewModel PrintersVM { get; set; }
         public DataCustomerViewModel DataCustomerVM { get; set; }
         public SettingsViewModel SettingsVM { get; set; }
-        public bool IsConnectedServer
-        {
-            get => m_bConnectedServer;
-            set
-            {
-                if (SetProperty(ref m_bConnectedServer, value))
-                {
-
-                }
-            }
-        }
-        public int ShiftNow
-        {
-            get => m_nShiftNow;
-            set
-            {
-                if (SetProperty(ref m_nShiftNow, value))
-                {
-                    PrintersVM.KGKJetPrinter1.ShiftNow = m_nShiftNow;
-                    PrintersVM.KGKJetPrinter2.ShiftNow = m_nShiftNow;
-                    PrintersVM.KGKJetPrinter3.ShiftNow = m_nShiftNow;
-                }
-            }
-        }
         #endregion
 
+        #region Functions
         private void LoginSystemEventHandle(emLoginStatus eStatus, emRole eRole)
         {
             switch (eStatus)
@@ -377,7 +360,23 @@ namespace PSS_HVCement.ViewModels
 
             m_socket.SendMsg(cmd);
         }
+        private void GetAppInfo()
+        {
+            // get info Assembly
+            Assembly assembly = Assembly.GetExecutingAssembly();
 
+            // get name
+            string appName = assembly.GetName().Name;
+
+            // get version
+            Version version = assembly.GetName().Version;
+            string appVersion = version.ToString();
+            AppVersion = "Version: " + appVersion;
+            AppName = appName;
+        }
+        #endregion
+
+        #region Properties
         private string m_displayImage_LoginStatusPath = "/Resources/Images/account.png";
         public string DisplayImage_LoginStatusPath
         {
@@ -431,6 +430,41 @@ namespace PSS_HVCement.ViewModels
                 }
             }
         }
+        public bool IsConnectedServer
+        {
+            get => m_bConnectedServer;
+            set
+            {
+                if (SetProperty(ref m_bConnectedServer, value))
+                {
+
+                }
+            }
+        }
+        public int ShiftNow
+        {
+            get => m_nShiftNow;
+            set
+            {
+                if (SetProperty(ref m_nShiftNow, value))
+                {
+                    PrintersVM.KGKJetPrinter1.ShiftNow = m_nShiftNow;
+                    PrintersVM.KGKJetPrinter2.ShiftNow = m_nShiftNow;
+                    PrintersVM.KGKJetPrinter3.ShiftNow = m_nShiftNow;
+                }
+            }
+        }
+        public string AppVersion
+        {
+            get => m_strAppVersion;
+            set { SetProperty(ref m_strAppVersion, value);}
+        }
+        public string AppName
+        {
+            get => m_strAppName;
+            set { SetProperty(ref m_strAppName, value); }
+        }
+        #endregion
 
         public ICommand AboutCmd { get; }
         public ICommand OpenSettingViewCmd { get; }
