@@ -23,9 +23,18 @@
             <!--<RowDefinition Height="30" />-->
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Margin="5 10 0 0"
+                       FontSize="12"
+                       FontWeight="SemiBold"
+                       Foreground="Black"
+                       FontFamily="Consolas"
+                       Text="{Binding AppVersion}"
+                       Opacity="0.95" />
             <Label VerticalAlignment="Top"
                    HorizontalAlignment="Left"
-                   Margin="5 2 2 2"
+                   Margin="50 2 2 2"
                    Content="{Binding IsConnectedServer, Converter={StaticResource BooleanToServerStatusConverter}}"
                    Foreground="{Binding IsConnectedServer, Converter={StaticResource BooleanToForegroundConverter}}"
                    FontWeight="SemiBold"

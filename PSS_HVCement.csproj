@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>output\XMXS\</OutputPath>
+    <OutputPath>output\XMXS\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -46,7 +46,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
+    <OutputPath>output\XMXS\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -217,6 +217,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Settings.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -250,4 +253,53 @@
     <Content Include="Software Protector.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- Change AssemblyInfo.cs AssemblyVersion with date/time and increment revision daily by one in Visual Studio 2022 -->
+  <Target Name="AssemblyVersion" BeforeTargets="CoreCompile" DependsOnTargets="PrepareForBuild">
+    <PropertyGroup>
+      <!-- Define Constants -->
+      <AssemblyInfo>Properties\AssemblyInfo.cs</AssemblyInfo>
+      <AssemblyInfoContent>$([System.IO.File]::ReadAllText($(AssemblyInfo)))</AssemblyInfoContent>
+      <VersionRegex>(\[\s*assembly\s*:\s*AssemblyVersion\(\s*"(\d+)\.(\d+)\.(\d+)(\.)(\d+)("\)\s*\]))</VersionRegex>
+      <BuildAndRevisionRegex>(\d+\.\d+")</BuildAndRevisionRegex>
+      <!-- Parse Build and Revision from AssemblyInfo-->
+      <AssemblyVersion>$([System.Text.RegularExpressions.Regex]::Match('$(AssemblyInfoContent)', '$(VersionRegex)'))</AssemblyVersion>
+      <BuildAndRevision>$([System.Text.RegularExpressions.Regex]::Match('$(AssemblyVersion)', '$(BuildAndRevisionRegex)'))</BuildAndRevision>
+      <BuildAndRevision>$(BuildAndRevision.Remove($(BuildAndRevision.LastIndexOf('"')), 1))</BuildAndRevision>
+      <!-- Generate Build and Revision from AssemblyVersion -->
+      <Build>$(BuildAndRevision.SubString(0, $(BuildAndRevision.LastIndexOf('.'))))</Build>
+      <Revision>$(BuildAndRevision.SubString($([MSBuild]::Add($(BuildAndRevision.LastIndexOf('.')), 1))))</Revision>
+      <!-- Increment Revision by one if Build equal Current Day otherwise start from one as new Day Build-->
+      <Revision Condition="$([System.DateTime]::Now.Day) == $(Build)">$([MSBuild]::Add($(Revision), 1))</Revision>
+      <Revision Condition="$([System.DateTime]::Now.Day) != $(Build)">1</Revision>
+      <!-- New AssemblyVersion Block -->
+      <AssemblyVersion>[assembly: AssemblyVersion("$([System.DateTime]::Now.ToString("yyyy.M.d.$(Revision)"))")]</AssemblyVersion>
+    </PropertyGroup>
+    <!-- Write New AssemblyVersion Block to AssemblyInfo.cs file -->
+    <WriteLinesToFile File="$(AssemblyInfo)" Lines="$([System.Text.RegularExpressions.Regex]::Replace($(AssemblyInfoContent), $(VersionRegex), $(AssemblyVersion)))" Overwrite="true" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Release goto:release 
+
+if $(ConfigurationName) == Debug goto:debug
+
+:release
+if $(PlatformName) == Any CPU goto :AnyCPURe
+if $(PlatformName) == x64 goto :x64Re
+
+:debug
+if $(PlatformName) == Any CPU goto :AnyCPUDe
+if $(PlatformName) == x64 goto :x64De
+
+:x64Re
+xcopy "$(SolutionDir)output\XMXS\Release\" "$(SolutionDir)Builds\XMXS\Release" /D /y /s /r /exclude:$(SolutionDir)output\XMXS\Release\exclude.txt
+start ""  "$(SolutionDir)Builds\XMXS\Release"
+goto :exit
+
+:x64De
+xcopy "$(SolutionDir)output\XMXS\Debug\" "$(SolutionDir)Builds\XMXS\Debug" /D /y /s /r /exclude:$(SolutionDir)output\XMXS\Debug\exclude.txt
+start ""  "$(SolutionDir)Builds\XMXS\Debug"
+goto :exit
+
+:exit</PostBuildEvent>
+  </PropertyGroup>
 </Project>
