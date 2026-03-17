@@ -40,6 +40,20 @@ namespace PSS_HVCement.Views
             MainWindowViewModel.Instance.PrintersVM.KGKJetPrinter3.ResetPrintCount();
         }
 
+        private void btnResetPrintCount4_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel.Instance.PrintersVM.KGKJetPrinter4.ResetPrintCount();
+        }
+
+        private void btnResetPrintCount5_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel.Instance.PrintersVM.KGKJetPrinter5.ResetPrintCount();
+        }
+
+        private void btnResetPrintCount6_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel.Instance.PrintersVM.KGKJetPrinter6.ResetPrintCount();
+        }
         private void chkUseCheckPrintCount_Checked(object sender, RoutedEventArgs e)
         {
 

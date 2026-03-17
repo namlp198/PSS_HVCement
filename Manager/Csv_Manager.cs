@@ -16,6 +16,9 @@ namespace PSS_HVCement.Manager
 {
     public class Csv_Manager
     {
+        private static readonly log4net.ILog log =
+    log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private string m_strProductionDataFolderPath = "D:\\DuLieuSanXuat";
         private string m_strDailyProductionDataFolderPath = "";
         private string m_strCsvFileCurrent = "";
@@ -54,6 +57,8 @@ namespace PSS_HVCement.Manager
             CreateFolder(m_strDailyProductionDataFolderPath);
 
             CreateDataFile(nNumberOfPrinter, bWriteLogPrinter);
+
+            log.Info("Initialize Csv manager success");
         }
         private void CreateFolder(string folderPath)
         {
@@ -112,6 +117,7 @@ namespace PSS_HVCement.Manager
                     }
                 }
             }
+            log.Info("Create data csv file success");
         }
 
         #region Read/Write Production Data

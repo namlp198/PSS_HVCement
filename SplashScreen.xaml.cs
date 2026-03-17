@@ -29,6 +29,9 @@ namespace PSS_HVCement
     /// </summary>
     public partial class SplashScreen : Window
     {
+        private static readonly log4net.ILog log =
+         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private bool closeCompleted = false;
         public SplashScreen()
         {
@@ -65,6 +68,7 @@ namespace PSS_HVCement
                 PrintersView printersView = new PrintersView();
                 DataCustomerView dataView = new DataCustomerView();
 
+                log.Info("Start create UI Printer");
                 if (CheckRemainingMaintenancePeriod())
                 {
                     PrintersViewModel printerVM = new PrintersViewModel(printersView.Dispatcher, printersView);
@@ -85,9 +89,27 @@ namespace PSS_HVCement
                                                               settingsVM.PrinterModels[2].UseTimerCheckPrintCount, settingsVM.PrinterModels[2].CheckPrintStateDelay,
                                                               settingsVM.PrinterModels[2].CheckPrintCountDelay, settingsVM.PrinterModels[2].IsResetPrintCount, mode);
 
+                    printerVM.KGKJetPrinter4 = new KGKJetPrinterView(settingsVM.PrinterModels[3].IpPrinter, settingsVM.PrinterModels[3].Id);
+                    printerVM.KGKJetPrinter4.SetParamsDefault(settingsVM.PrinterModels[3].TextModule, settingsVM.PrinterModels[3].UseTimerCheckPrintState,
+                                                              settingsVM.PrinterModels[3].UseTimerCheckPrintCount, settingsVM.PrinterModels[3].CheckPrintStateDelay,
+                                                              settingsVM.PrinterModels[3].CheckPrintCountDelay, settingsVM.PrinterModels[3].IsResetPrintCount, mode);
+
+                    printerVM.KGKJetPrinter5 = new KGKJetPrinterView(settingsVM.PrinterModels[4].IpPrinter, settingsVM.PrinterModels[4].Id);
+                    printerVM.KGKJetPrinter5.SetParamsDefault(settingsVM.PrinterModels[4].TextModule, settingsVM.PrinterModels[4].UseTimerCheckPrintState,
+                                                              settingsVM.PrinterModels[4].UseTimerCheckPrintCount, settingsVM.PrinterModels[4].CheckPrintStateDelay,
+                                                              settingsVM.PrinterModels[4].CheckPrintCountDelay, settingsVM.PrinterModels[4].IsResetPrintCount, mode);
+
+                    printerVM.KGKJetPrinter6 = new KGKJetPrinterView(settingsVM.PrinterModels[5].IpPrinter, settingsVM.PrinterModels[5].Id);
+                    printerVM.KGKJetPrinter6.SetParamsDefault(settingsVM.PrinterModels[5].TextModule, settingsVM.PrinterModels[5].UseTimerCheckPrintState,
+                                                              settingsVM.PrinterModels[5].UseTimerCheckPrintCount, settingsVM.PrinterModels[5].CheckPrintStateDelay,
+                                                              settingsVM.PrinterModels[5].CheckPrintCountDelay, settingsVM.PrinterModels[5].IsResetPrintCount, mode);
+
                     printersView.contentPrinter1.Content = printerVM.KGKJetPrinter1;
                     printersView.contentPrinter2.Content = printerVM.KGKJetPrinter2;
                     printersView.contentPrinter3.Content = printerVM.KGKJetPrinter3;
+                    printersView.contentPrinter4.Content = printerVM.KGKJetPrinter4;
+                    printersView.contentPrinter5.Content = printerVM.KGKJetPrinter5;
+                    printersView.contentPrinter6.Content = printerVM.KGKJetPrinter6;
 
                     printerVM.Initialize();
                     printersView.DataContext = printerVM;
@@ -153,7 +175,10 @@ namespace PSS_HVCement
 
             int dayRemaining = (validate.ExpireDate - DateTime.Now.Date).Days;
             if (dayRemaining <= 0)
+            {
+                log.Error("License key expire date!!!");
                 return false;
+            }    
 
             if (dayRemaining <= 14)
             {
@@ -161,6 +186,8 @@ namespace PSS_HVCement
                 MessageBox.Show(s, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             Defines.DaysRemaining = dayRemaining;
+
+            log.Info("Check remain maintenance success!");
             return true;
         }
     }

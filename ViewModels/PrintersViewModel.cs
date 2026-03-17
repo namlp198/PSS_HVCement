@@ -17,6 +17,9 @@ namespace PSS_HVCement.ViewModels
 {
     public class PrintersViewModel : ViewModelBase
     {
+        private static readonly log4net.ILog log =
+       log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly Dispatcher m_dispatcher;
         private PrintersView m_printerView;
         public PrintersView PrinterView { get { return m_printerView; } set { m_printerView = value; } }
@@ -24,9 +27,15 @@ namespace PSS_HVCement.ViewModels
         private KGKJetPrinterView m_kgkPrinter1 = new KGKJetPrinterView();
         private KGKJetPrinterView m_kgkPrinter2 = new KGKJetPrinterView();
         private KGKJetPrinterView m_kgkPrinter3 = new KGKJetPrinterView();
+        private KGKJetPrinterView m_kgkPrinter4 = new KGKJetPrinterView();
+        private KGKJetPrinterView m_kgkPrinter5 = new KGKJetPrinterView();
+        private KGKJetPrinterView m_kgkPrinter6 = new KGKJetPrinterView();
         public KGKJetPrinterView KGKJetPrinter1 { get => m_kgkPrinter1; set => m_kgkPrinter1 = value; }
         public KGKJetPrinterView KGKJetPrinter2 { get => m_kgkPrinter2; set => m_kgkPrinter2 = value; }
         public KGKJetPrinterView KGKJetPrinter3 { get => m_kgkPrinter3; set => m_kgkPrinter3 = value; }
+        public KGKJetPrinterView KGKJetPrinter4 { get => m_kgkPrinter4; set => m_kgkPrinter4 = value; }
+        public KGKJetPrinterView KGKJetPrinter5 { get => m_kgkPrinter5; set => m_kgkPrinter5 = value; }
+        public KGKJetPrinterView KGKJetPrinter6 { get => m_kgkPrinter6; set => m_kgkPrinter6 = value; }
 
         private readonly string m_sDate = string.Empty;
         private readonly string m_sPrintCode = string.Empty;
@@ -39,7 +48,7 @@ namespace PSS_HVCement.ViewModels
             m_dispatcher = dispatcher;
             m_printerView = printerView;
 
-            m_timSendData.Interval = 5000;
+            m_timSendData.Interval = 6000;
             m_timSendData.Elapsed += M_timSendData_Elapsed;
 
             m_sDate = DateTime.Now.ToString("dd/MM/yyyy");
@@ -51,14 +60,17 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter1.PrintCompletedEvent += m_kgkPrinter1_PrintCompletedEvent;
             m_kgkPrinter2.PrintCompletedEvent += m_kgkPrinter2_PrintCompletedEvent;
             m_kgkPrinter3.PrintCompletedEvent += m_kgkPrinter3_PrintCompletedEvent;
+            m_kgkPrinter4.PrintCompletedEvent += m_kgkPrinter4_PrintCompletedEvent;
+            m_kgkPrinter5.PrintCompletedEvent += m_kgkPrinter5_PrintCompletedEvent;
+            m_kgkPrinter6.PrintCompletedEvent += m_kgkPrinter6_PrintCompletedEvent;
 
             //m_kgkPrinter1.PrintCountIncreaseEvent += kgkPrinter1_PrintCountIncreaseEvent;
             //m_kgkPrinter2.PrintCountIncreaseEvent += kgkPrinter2_PrintCountIncreaseEvent;
             //m_kgkPrinter3.PrintCountIncreaseEvent += kgkPrinter3_PrintCountIncreaseEvent;
 
-            m_kgkPrinter1.ReportFromPrinterEvent += M_kgkPrinter1_ReportFromPrinterEvent;
-            m_kgkPrinter2.ReportFromPrinterEvent += M_kgkPrinter2_ReportFromPrinterEvent;
-            m_kgkPrinter3.ReportFromPrinterEvent += M_kgkPrinter3_ReportFromPrinterEvent;
+            //m_kgkPrinter1.ReportFromPrinterEvent += M_kgkPrinter1_ReportFromPrinterEvent;
+            //m_kgkPrinter2.ReportFromPrinterEvent += M_kgkPrinter2_ReportFromPrinterEvent;
+            //m_kgkPrinter3.ReportFromPrinterEvent += M_kgkPrinter3_ReportFromPrinterEvent;
 
             //m_kgkPrinter1.PrinterStatusChangeEvent += M_kgkPrinter1_PrinterStatusChangeEvent;
             //m_kgkPrinter2.PrinterStatusChangeEvent += M_kgkPrinter2_PrinterStatusChangeEvent;
@@ -67,10 +79,16 @@ namespace PSS_HVCement.ViewModels
             m_kgkPrinter1.IsVisibleStackShiftProduction = true;
             m_kgkPrinter2.IsVisibleStackShiftProduction = true;
             m_kgkPrinter3.IsVisibleStackShiftProduction = true;
+            m_kgkPrinter4.IsVisibleStackShiftProduction = true;
+            m_kgkPrinter5.IsVisibleStackShiftProduction = true;
+            m_kgkPrinter6.IsVisibleStackShiftProduction = true;
+
+            log.Info("Initialize PrintersViewModel Success!");
         }
         public void StartTimerSendData()
         {
             m_timSendData.Start();
+            log.Info("Start send data to Server");
         }
         public void StopTimerSendData()
         {
@@ -84,6 +102,9 @@ namespace PSS_HVCement.ViewModels
                 m_arrDataSend[0] = (int)m_kgkPrinter1.PrinterStatus + 1;
                 m_arrDataSend[1] = (int)m_kgkPrinter2.PrinterStatus + 1;
                 m_arrDataSend[2] = (int)m_kgkPrinter3.PrinterStatus + 1;
+                m_arrDataSend[3] = (int)m_kgkPrinter4.PrinterStatus + 1;
+                m_arrDataSend[4] = (int)m_kgkPrinter5.PrinterStatus + 1;
+                m_arrDataSend[5] = (int)m_kgkPrinter6.PrinterStatus + 1;
 
                 MainWindowViewModel.Instance.SendPrinterStatus("01", m_arrDataSend);
             }));
@@ -211,6 +232,57 @@ namespace PSS_HVCement.ViewModels
 
             excelSystemDataModels.Add(excelModel);
             Csv_Manager.Instance.WriteNewSysDataModelToCsv(excelSystemDataModels, 1);
+        }
+
+        private void m_kgkPrinter6_PrintCompletedEvent(List<string> data)
+        {
+            // record to database
+            List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
+            ExcelProductionDataModel excelModel = new ExcelProductionDataModel();
+            excelModel.PDate = data[0];
+            excelModel.PStartTime = data[1];
+            excelModel.PEndTime = data[2];
+            excelModel.PShift = data[3];
+            excelModel.DeliveryCode = data[4];
+            excelModel.PrintCode = data[5];
+            excelModel.PrintCount = int.Parse(data[6]);
+
+            excelProductionDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 6);
+        }
+
+        private void m_kgkPrinter5_PrintCompletedEvent(List<string> data)
+        {
+            // record to database
+            List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
+            ExcelProductionDataModel excelModel = new ExcelProductionDataModel();
+            excelModel.PDate = data[0];
+            excelModel.PStartTime = data[1];
+            excelModel.PEndTime = data[2];
+            excelModel.PShift = data[3];
+            excelModel.DeliveryCode = data[4];
+            excelModel.PrintCode = data[5];
+            excelModel.PrintCount = int.Parse(data[6]);
+
+            excelProductionDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 5);
+        }
+
+        private void m_kgkPrinter4_PrintCompletedEvent(List<string> data)
+        {
+            // record to database
+            List<ExcelProductionDataModel> excelProductionDataModels = new List<ExcelProductionDataModel>();
+            ExcelProductionDataModel excelModel = new ExcelProductionDataModel();
+            excelModel.PDate = data[0];
+            excelModel.PStartTime = data[1];
+            excelModel.PEndTime = data[2];
+            excelModel.PShift = data[3];
+            excelModel.DeliveryCode = data[4];
+            excelModel.PrintCode = data[5];
+            excelModel.PrintCount = int.Parse(data[6]);
+
+            excelProductionDataModels.Add(excelModel);
+            Csv_Manager.Instance.WriteNewProductionDataModelToCsv(excelProductionDataModels, 4);
         }
 
         private void m_kgkPrinter3_PrintCompletedEvent(List<string> data)

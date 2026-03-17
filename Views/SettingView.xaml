@@ -98,6 +98,39 @@
                         Name="btnResetPrintCount3"
                         Click="btnResetPrintCount3_Click" />
             </TabItem>
+            <TabItem Header="Máy in 4"
+         FontWeight="SemiBold">
+                <Button Margin="10 20"
+            Width="150"
+            Height="30"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Reset Print Count"
+            Name="btnResetPrintCount4"
+            Click="btnResetPrintCount4_Click" />
+            </TabItem>
+            <TabItem Header="Máy in 5"
+         FontWeight="SemiBold">
+                <Button Margin="10 20"
+            Width="150"
+            Height="30"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Reset Print Count"
+            Name="btnResetPrintCount5"
+            Click="btnResetPrintCount5_Click" />
+            </TabItem>
+            <TabItem Header="Máy in 6"
+         FontWeight="SemiBold">
+                <Button Margin="10 20"
+            Width="150"
+            Height="30"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Reset Print Count"
+            Name="btnResetPrintCount6"
+            Click="btnResetPrintCount6_Click" />
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

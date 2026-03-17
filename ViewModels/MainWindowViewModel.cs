@@ -23,6 +23,9 @@ namespace PSS_HVCement.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private static readonly log4net.ILog log =
+       log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly Dispatcher m_dispatcher;
         private MainWindow m_mainView;
         public MainWindow MainView { get => m_mainView; set => m_mainView = value; }
@@ -89,12 +92,14 @@ namespace PSS_HVCement.ViewModels
             CreateDailyResult();
             LoadDailyResultYes();
 
-            m_timReconnectServer.Interval = 6000;
+            m_timReconnectServer.Interval = 8000;
             m_timReconnectServer.Elapsed += M_timReconnectServer_Elapsed;
 
             ShiftNow = CheckManufactureShift();
 
             GetAppInfo();
+
+            log.Info("Initialize MainViewModel completed!");
         }
 
         private void M_timCheckShiftNow_Elapsed(object sender, ElapsedEventArgs e)
@@ -137,6 +142,8 @@ namespace PSS_HVCement.ViewModels
                     if (m_socket.ReceiveString.Length < 6)
                         return;
 
+                    log.Info($"Data receive from server: {m_socket.ReceiveString}");
+
                     if (m_socket.ReceiveString.StartsWith("*11@!?"))
                     {
 
@@ -175,6 +182,27 @@ namespace PSS_HVCement.ViewModels
                                     PrintersVM.KGKJetPrinter3.PerformPushMessageAuto();
                                 }));
                                 break;
+                            case "04":
+                                PrintersVM.KGKJetPrinter4.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    PrintersVM.KGKJetPrinter4.MessageContent = content;
+                                    PrintersVM.KGKJetPrinter4.PerformPushMessageAuto();
+                                }));
+                                break;
+                            case "05":
+                                PrintersVM.KGKJetPrinter5.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    PrintersVM.KGKJetPrinter5.MessageContent = content;
+                                    PrintersVM.KGKJetPrinter5.PerformPushMessageAuto();
+                                }));
+                                break;
+                            case "06":
+                                PrintersVM.KGKJetPrinter6.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    PrintersVM.KGKJetPrinter6.MessageContent = content;
+                                    PrintersVM.KGKJetPrinter6.PerformPushMessageAuto();
+                                }));
+                                break;
                         }
                     }
                     break;
@@ -182,19 +210,23 @@ namespace PSS_HVCement.ViewModels
                     IsConnectedServer = true;
 
                     m_timReconnectServer.Stop();
-                    m_timCheckShiftNow.Start();
+
+                    log.Info("Connect to server success!");
+                    //m_timCheckShiftNow.Start();
                     PrintersVM.StartTimerSendData();
                     break;
                 case NClientSocket.EConnectionEventClient.CLIENTDISCONNECTED:
                     IsConnectedServer = false;
 
+                    log.Error("Disconnect to server");
                     PrintersVM.StopTimerSendData();
 
                     if(SettingsVM.SysModel.UseAutoMode)
                     {
                         m_timReconnectServer.Start();
+                        log.Info("Reconnect to server");
                     }    
-                    m_timCheckShiftNow.Stop();
+                    //m_timCheckShiftNow.Stop();
                     break;
                 default:
                     break;
